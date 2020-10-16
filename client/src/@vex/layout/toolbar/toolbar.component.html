@@ -1,0 +1,136 @@
+<div class="toolbar w-full px-gutter" fxLayout="row" fxLayoutAlign="start center" vexContainer>
+  <button (click)="openSidenav()" [fxHide]="!mobileQuery" mat-icon-button type="button">
+    <mat-icon [icIcon]="icMenu"></mat-icon>
+  </button>
+
+  <a *ngIf="isVerticalLayout$ | async" [routerLink]="['/']" class="ltr:mr-4 rtl:ml-4 block" fxLayout="row"
+    fxLayoutAlign="start center">
+    <img class="w-8 select-none" src="assets/img/demo/logo.svg">
+    <h1 [fxHide]="mobileQuery" class="title ltr:pl-4 rtl:pr-4 m-0 select-none">3S Property</h1>
+  </a>
+
+  <button *ngIf="isHorizontalLayout$ | async" [fxHide]="mobileQuery" [matMenuTriggerFor]="addNewMenu" color="primary"
+    mat-raised-button type="button">ADD NEW
+  </button>
+
+  <mat-menu #addNewMenu="matMenu" [overlapTrigger]="false" xPosition="after" yPosition="below">
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icPersonAdd"></mat-icon>
+      <span>Add Contact</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icDoneAll"></mat-icon>
+      <span>Add Task</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icAssignmentTurnedIn"></mat-icon>
+      <span>Add Project</span>
+    </button>
+
+    <button [matMenuTriggerFor]="documentMenu" mat-menu-item>
+      <mat-icon [icIcon]="icBallot"></mat-icon>
+      <span>Add Document</span>
+    </button>
+  </mat-menu>
+
+  <mat-menu #documentMenu="matMenu">
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icDescription"></mat-icon>
+      <span>Add Quote</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icAssignment"></mat-icon>
+      <span>Add Invoice</span>
+    </button>
+
+    <button mat-menu-item>
+      <mat-icon [icIcon]="icReceipt"></mat-icon>
+      <span>Add Receipt</span>
+    </button>
+  </mat-menu>
+
+  <div #megaMenuOriginRef class="ltr:ml-2 rtl:mr-2">
+    <button *ngIf="isHorizontalLayout$ | async" [fxHide]="mobileQuery" (click)="openMegaMenu(megaMenuOriginRef)"
+      color="primary" mat-button type="button">MEGA MENU
+      <ic-icon [icon]="icArrowDropDown" class="ltr:-mr-1 rtl:-ml-1" inline="true"></ic-icon>
+    </button>
+  </div>
+
+
+  <div *ngIf="(isVerticalLayout$ | async) && isNavbarInToolbar$ | async" [fxHide]="mobileQuery" class="px-gutter"
+    fxFlex="none" fxLayout="row" fxLayoutAlign="start center">
+    <vex-navigation-item *ngFor="let item of navigationItems" [item]="item"></vex-navigation-item>
+  </div>
+
+  <span fxFlex></span>
+
+  <ng-container *ngIf="!(isLoggedIn$ | async)">
+    <div class="-mx-1 flex items-center">
+      <!-- <div class="w-full md:w-3/4 px-3 mb-6 md:mb-0">
+        <input class="appearance-none block w-full border border-red-500 rounded py-3 px-4 mb-3 leading-tight text-gray"
+          id="grid-first-name" type="text" placeholder="Search">
+      </div> -->
+      <div class="px-1">
+        <button mat-icon-button type="button">
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+      </div>
+
+      <a fxLayout="row" fxLayoutAlign="center center" (click)="login()" mat-button class="mx-1">
+        <mat-icon [icIcon]="icPerson" class="mx-2"></mat-icon>
+        <span class="px-1">Login / Register</span>
+      </a>
+
+
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="isLoggedIn$ | async">
+    <div class="-mx-1 flex items-center">
+      <div class="px-1">
+        <button mat-icon-button type="button">
+          <mat-icon [icIcon]="icSearch"></mat-icon>
+        </button>
+      </div>
+
+      <div class="px-1">
+        <vex-toolbar-notifications></vex-toolbar-notifications>
+      </div>
+
+      <!-- <div class="px-1">
+        <button (click)="openQuickpanel()" mat-icon-button type="button">
+          <mat-icon [icIcon]="icBookmarks"></mat-icon>
+        </button>
+      </div> -->
+
+      <div class="px-1">
+        <a mat-icon-button type="button" [routerLink]="['chat']">
+          <mat-icon [icIcon]="icChat"></mat-icon>
+        </a>
+      </div>
+
+      <div class="px-1">
+        <vex-toolbar-user></vex-toolbar-user>
+      </div>
+
+      <mat-menu #languageMenu="matMenu" overlapTrigger="false" xPosition="before" yPosition="below">
+        <button mat-menu-item>
+          <mat-icon [icIcon]="emojioneUS"></mat-icon>
+          <span>English</span>
+        </button>
+
+        <button mat-menu-item>
+          <mat-icon [icIcon]="emojioneDE"></mat-icon>
+          <span>German</span>
+        </button>
+      </mat-menu>
+    </div>
+  </ng-container>
+
+</div>
+
+<vex-navigation *ngIf="(isVerticalLayout$ | async) && isNavbarBelowToolbar$ | async" [fxHide]="mobileQuery">
+</vex-navigation>
