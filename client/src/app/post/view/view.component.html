@@ -1,0 +1,68 @@
+<div style="height: 400px;" fxLayout="row" fxLayoutAlign="center center" class="card w-100 container mt-4">
+    <img [src]="images[currentIndex] ? '/images/'+ images[currentIndex].path : 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101032/112815935-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'" style="max-height: 100%;" class="mt-2" />
+</div>
+<div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px" class="pt-4 card container">
+    <button mat-raised-button (click)="imageMove(true)" [disabled]="currentIndex == 0">
+        < Previous</button>
+            <button mat-raised-button (click)="imageMove(false)" [disabled]="(currentIndex == images.length-1) || !images.length">Next
+                ></button>
+</div>
+
+<div class="container card pt-8 px-gutter">
+    <div fxLayout="column" class="w-full px-gutter" fxLayoutAlign="start start" fxLayoutGap="20px">
+        <div fxLayout="row" class="w-full" fxLayoutAlign="start start" fxLayoutGap="20px">
+            <div>
+                <h2>{{postInfo.title}}</h2>
+                <p class="text-gray">{{postInfo.location}}</p>
+            </div>
+            <div>
+                <mat-icon [icIcon]="icFav" *ngIf="!isFav" (click)="isFav=!isFav" class="cursor-pointer"></mat-icon>
+                <mat-icon [icIcon]="icFavChecked" class="text-red cursor-pointer" *ngIf="isFav" (click)="isFav=!isFav">
+                </mat-icon>
+            </div>
+        </div>
+        <mat-divider class="my-4 w-full"></mat-divider>
+        <div fxLayout="row" class="w-full" fxLayoutAlign="start center" fxLayoutGap="20px">
+            <div fxLayout="row" class="w-full" fxLayoutAlign="start start" fxFlex="15"
+                class="border-r-2 border-gary p-2">
+                <span>$ </span>
+                <div>
+                    <h2 class="font-semibold"> {{postInfo.rent}}</h2>
+                    <span class="text-gray">Rent</span>
+                </div>
+            </div>
+            <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                {{postInfo.furnishing.name}}
+            </div>
+            <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                {{postInfo.type.name}}
+            </div>
+            <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                {{postInfo.property_type.name}}
+            </div>
+            <div fxFlex="10">
+                <h4 class="font-semibold md:border-r-2 border-gary"> {{postInfo.floor_number}}</h4>
+                <span class="text-gray">Floor Number</span>
+            </div>
+            <div fxFlex="10">
+                <h4 class="font-semibold"> {{postInfo.car_parking}}</h4>
+                <span class="text-gray">Car Parking</span>
+            </div>
+        </div>
+        <mat-divider class="my-4 w-full"></mat-divider>
+        <h2>Description</h2>
+        <span class="text-gray w-3/4">
+            {{postInfo.description}}
+        </span>
+        <mat-divider class="my-4 w-full"></mat-divider>
+
+        <h3>Landmark</h3>
+        <span class="text-gray w-3/4">
+            {{postInfo.landmarks}}
+        </span>
+        <mat-divider class="my-4 w-full"></mat-divider>
+
+        <button mat-raised-button class="rounded-lg" color="accent">Request For site visit</button>
+        <mat-divider class="my-4 w-full"></mat-divider>
+    </div>
+</div>

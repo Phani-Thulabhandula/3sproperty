@@ -21,8 +21,26 @@ const updateUserSchema = Joi.object({
 });
 
 
+const postSchema = Joi.object({
+    title: Joi.string().required(),
+    description: Joi.string().required(),
+    type: Joi.string().required(),
+    property_type: Joi.string().required(),
+    furnishing: Joi.string().required(),
+    rent: Joi.number().required(),
+    car_parking: Joi.number().required(),
+    floor_number: Joi.number().required(),
+    location: Joi.string().required(),
+    age: Joi.number().required(),
+    landmarks: Joi.string().required(),
+    images: Joi.array().required(),
+    isAvailable: Joi.boolean().required()
+});
+
+
 module.exports = {
     loginSchema,
     registerSchema,
-    updateUserSchema
+    updateUserSchema,
+    postSchema
 }

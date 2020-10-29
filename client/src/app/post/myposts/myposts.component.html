@@ -1,0 +1,48 @@
+<div vexContainer class="container ">
+    <div fxLayout="column" fxLayoutAlign="center start" class="px-12 w-10/12" fxLayoutGap="20px">
+        <div fxLayout="row" fxLayoutAlign="start start" class="py-4 w-full">
+            <h2 class="text-gary font-semibold">My Properties</h2>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center start" class="card hover:shadow-2 px-gutter py-4 w-full"
+            *ngFor="let post of myPosts">
+            <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" class="w-full">
+                <div fxFlex="35">
+                    <img style="max-height: 190px;" [src]="post.images[0]? '/images/' +post.images[0].path : 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101032/112815935-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'" class="w-full">
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center start" fxFlex="75" class="w-full">
+                    <p class="text-lg truncate" style="max-width: 400px;" >{{post.title}}</p>
+                    <p class="text-sm text-gray">{{post.location}}</p>
+                    <mat-divider class="my-2 w-full"></mat-divider>
+                    <div fxLayout="row" class="w-full" fxLayoutAlign="start center" fxLayoutGap="20px">
+                        <div fxLayout="row" class="w-full" fxLayoutAlign="start start" fxFlex="35"
+                            class="border-r-2 border-gary p-2">
+                            <span>$ </span>
+                            <div>
+                                <h2 class="font-semibold"> {{post.rent}}</h2>
+                                <span class="text-gray">Rent</span>
+                            </div>
+                        </div>
+                        
+                        <div fxFlex="20">
+                            <h4 class="font-semibold md:border-r-2 border-gary"> {{post.floor_number}}</h4>
+                            <span class="text-gray">Floor Number</span>
+                        </div>
+                        <div fxFlex="20">
+                            <h4 class="font-semibold"> {{post.car_parking}}</h4>
+                            <span class="text-gray">Car Parking</span>
+                        </div>
+                    </div>
+                    <mat-divider class="my-2 w-full"></mat-divider>
+                    <p class="text-xs max-w-full text1 text-gray">{{post.description}}</p>
+                    <mat-divider class="my-2 w-full"></mat-divider>
+                </div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="end center" class="py-2 w-full" fxLayoutGap="25px">
+                <a mat-raised-button color="secondary" [routerLink]="['/posts/update/' + post._id]" class="text-primary">Edit</a>
+
+                <a mat-raised-button color="primary" [routerLink]="['/posts/view/' + post._id]">View</a>
+            </div>
+        </div>
+
+    </div>
+</div>

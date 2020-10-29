@@ -1,9 +1,11 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/user')
+var JwtStrategy = require('passport-jwt').Strategy,
+    ExtractJwt = require('passport-jwt').ExtractJwt;
+var opts = {}
 
-
-passport.use(new LocalStrategy(
+passport.use('local', new LocalStrategy(
     { usernameField: 'email' }, async (email, password, done) => {
         console.log('Inside local strategy callback')
         try {
@@ -23,7 +25,28 @@ passport.use(new LocalStrategy(
     })
 )
 
-passport.serializeUser( (user, done) => {
+
+opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.secretOrKey = 'secret';
+// opts.issuer = 'accounts.examplesoft.com';
+// opts.audience = 'yoursite.net';
+passport.use('jwt', new JwtStrategy(opts, function (jwt_payload, done) {
+    console.log(jwt_payload, "--------");
+
+    User.findOne({ _id: jwt_payload.id }, function (err, user) {
+        if (err) {
+            return done(err, false);
+        }
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+            // or you could create a new account
+        }
+    });
+}));
+
+passport.serializeUser((user, done) => {
     console.log('Inside serializeUser callback. User id is save to the session file store here', user._id)
     return done(null, user._id);
 });
@@ -33,6 +56,6 @@ passport.deserializeUser(async (id, done) => {
     console.log(`The user id passport saved in the session file store is: ${id}`)
     var user = await User.findOne({ _id: id }).exec();
     console.log(user);
-    
+
     done(null, user);
 });

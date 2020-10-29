@@ -12,6 +12,8 @@ function ValidateUser(req, res, next) {
 }
 
 function ValidateLogin(req, res, next) {
+    console.log(req);
+    
     var { error, result } = loginSchema.validate(req.body);
     if (error) {
         let messages = error["details"].map(e => e.message) || ["Validation Failed"]

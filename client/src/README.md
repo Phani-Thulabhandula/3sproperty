@@ -1,12 +1,4 @@
 
-# Introduction
-
-Vex is a Creative, Responsive Material Design Admin Template built with Angular 10+ and the Angular-CLI. It extends the Material Design components built by the Angular team and it offers you everything you need to get started with your next CRM, CMS, Project Management, or other projects.
-
-Vex has **no dependency on jQuery or similiar libraries**, Angular's functionality is completely used.
-
-Support is available through E-Mail ([themeforest@visurel.com](mailto:themeforest@visurel.com)). If you purchased the theme and love it, consider giving it a 5-star rating here on ThemeForest. It really helps pushing out more updates and adding more great features.
-
 # Getting Started
 
 > In this section you will find the basic folder structure and everything you need to get the template up and running the first time to start developing.
@@ -44,17 +36,17 @@ or
 
 and the package manager `npm` will do the rest.
 
-### Install Vex Dependencies
+### Install Dependencies
 
 Navigate to the Vex folder and run `npm install` to install all dependencies required by Vex.
 
 ## Start Development Server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `npm run ui` for a dev server. Navigate to `http://localhost:5000/`.
 
 ## Build for Production
 
-If you want to create a build for a production environment you can simply run `npm run build` or `ng build --prod` and you will get static HTML and JS files in the `/dist` folder ready to be uploaded to any server.
+If you want to create a build for a production environment you can simply run `npm run build` or `ng build --prod` and you will get static HTML and JS files in the `/public` folder ready to be uploaded to any server.
 
 # Customization
 

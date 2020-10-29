@@ -83,12 +83,13 @@ export class AuthenticationComponent implements OnInit {
   login() {
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.authService.login(this.loginForm.getRawValue()).subscribe(res => {
+      this.authService.login(this.loginForm.getRawValue()).subscribe((res:any) => {
         console.log(res);
         if (res['userInfo']) {
           this.authService.setUserInfo(res['userInfo']);
           localStorage.setItem('user', JSON.stringify(res['userInfo']));
           localStorage.setItem('isloggedIn', '1');
+          localStorage.setItem('_A_tro_ee', res.token)
         }
         this.isLoading = false;
         this.authService.setLoggedIn(true);
@@ -104,11 +105,13 @@ export class AuthenticationComponent implements OnInit {
     this.emailExists = false;
     if (this.registerForm.valid) {
       this.isLoading = true;
-      this.authService.register(this.registerForm.getRawValue()).subscribe(res => {
+      this.authService.register(this.registerForm.getRawValue()).subscribe((res:any) => {
         if (res['userInfo']) {
           this.authService.setUserInfo(res['userInfo']);
           localStorage.setItem('user', JSON.stringify(res['userInfo']));
           localStorage.setItem('isloggedIn', '1');
+          localStorage.setItem('_A_tro_ee', res.token)
+
         }
         this.authService.setLoggedIn(true);
         this.isLoading = false;

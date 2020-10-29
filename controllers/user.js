@@ -1,24 +1,27 @@
 
 var User = require('../models/user');
-
+var jwt = require('jsonwebtoken')
 
 function UserRegister(req, res, done) {
     let newUser = new User(req.ValidatedData);
     return newUser.save().then(us => {
-        return res.status(201).send(
-            {
-                success: true,
-                message: "User regitered success.",
-                userInfo: {first_name: us.first_name, email: us.email, id: us._id}
-            }
-        )
-    }).catch(err => {
-        return res.send({
-            success: false,
-            message: "User regitered Failed.",
-            error: err
+        jwt.sign({ id: us._id }, 'secret', { algorithm: 'HS256' }, function (err, token) {
+            return res.status(201).send(
+                {
+                    success: true,
+                    message: "User regitered success.",
+                    userInfo: { first_name: us.first_name, email: us.email, id: us._id },
+                    token
+                }
+            )
+        }).catch(err => {
+            return res.send({
+                success: false,
+                message: "User regitered Failed.",
+                error: err
+            });
         });
-    });
+    })
 }
 
 // Sample purpose 
@@ -62,7 +65,7 @@ function getProfile(req, res, done) {
                 message: "User Doest not exists."
             })
         }
-        return res.status(200).send({ id: user._id, email: user.email, first_name : user.first_name, last_name: user.last_name, phone: user.phone })
+        return res.status(200).send({ id: user._id, email: user.email, first_name: user.first_name, last_name: user.last_name, phone: user.phone })
     });
 }
 

@@ -10,6 +10,8 @@ const routes: Routes = [
       { path: '', loadChildren: () => import('./board/board.module').then(m => m.BoardModule) },
       { path: 'users', loadChildren: () => import('./users/users.module').then(m => m.UsersModule) },
       { path: 'chat', loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule) },
+      { path: 'posts', loadChildren: () => import('./post/post.module').then(m => m.PostModule) },
+
     ]
   },
   {
