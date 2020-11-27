@@ -1,3 +1,46 @@
-.me + .partner, .partner + .me {
+.me+.partner,
+.partner+.me {
   margin-top: var(--padding);
+}
+
+
+.message-bubble {
+  border-radius: 8px;
+  color: #303030;
+  position: relative;
+  font-size: 14px;
+
+  &:after {
+    display: block;
+    position: absolute;
+    content: "";
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.me.message-bubble {
+  background-color: #0199ff;
+  color: white;
+  &:after {
+    background-color: #0199ff;
+
+    right: -4px;
+  }
+}
+
+.notme.message-bubble {
+  background-color: #d8dde1;
+
+  &:after {
+    background-color: #d8dde1;
+    left: -4px;
+  }
 }

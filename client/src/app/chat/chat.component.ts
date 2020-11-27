@@ -15,7 +15,8 @@ import { NavigationEnd, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ChatService } from './chat.service';
 import { OnlineStatus } from '../../@vex/layout/toolbar/toolbar-user/toolbar-user-dropdown/toolbar-user-dropdown.component';
-import { chats } from '../static_data/chats';
+import { AuthService } from '../../@vex/services/auth.service';
+// import { chats } from '../static_data/chats';
 
 export interface Chat {
   id: number;
@@ -47,10 +48,12 @@ export interface ChatMessage {
 })
 export class ChatComponent implements OnInit, OnDestroy {
 
-  chats$: Observable<Chat[]> = of(chats).pipe(
-    // Fix to allow stagger animations with static data
-    delay(0)
-  );
+  // chats$: Observable<Chat[]> = of(chats).pipe(
+  //   // Fix to allow stagger animations with static data
+  //   delay(0)
+  // );
+
+  chats: any = [];
 
   mobileQuery = this.mediaMatcher.matchMedia('(max-width: 959px)');
   drawerOpen$ = this.chatService.drawerOpen$;
@@ -89,13 +92,20 @@ export class ChatComponent implements OnInit, OnDestroy {
   icChat = icChat;
   trackById = trackById;
   private _mobileQueryListener: () => void;
+  userInfo = {
+    id: "",
+    avatar: ""
+  }
 
   constructor(private cd: ChangeDetectorRef,
-              private router: Router,
-              private mediaMatcher: MediaMatcher,
-              private chatService: ChatService) { }
+    private router: Router,
+    private authService: AuthService,
+    private mediaMatcher: MediaMatcher,
+    private chatService: ChatService) { }
 
   ngOnInit() {
+    this.userInfo = this.authService.userInfo;
+    this.getChats();
     this.mobileQuery.matches ? this.closeDrawer() : this.openDrawer();
     this._mobileQueryListener = () => {
       this.mobileQuery.matches ? this.closeDrawer() : this.openDrawer();
@@ -131,5 +141,13 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeEventListener('change', this._mobileQueryListener);
+  }
+
+  getChats() {
+    this.chatService.getChats().subscribe(chats => {
+      this.chats = chats || [];
+      this.cd.detectChanges();
+
+    })
   }
 }

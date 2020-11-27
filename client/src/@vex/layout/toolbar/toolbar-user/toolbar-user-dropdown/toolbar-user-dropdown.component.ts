@@ -118,19 +118,11 @@ export class ToolbarUserDropdownComponent implements OnInit {
 
   ngOnInit() {
     if (this.authService.isLoggedIn$) {
-      console.log("LOggedINN");
-      try {
-        let user = JSON.parse(localStorage.getItem('user'))
-        this.userInfo = user
-      } catch (error) {
-        console.log(error);
-
-      }
+        this.userInfo = this.authService.userInfo;
     }
   }
 
   logout() {
-
     this.authService.logout().subscribe(res => {
       this.router.navigate([''])
     });

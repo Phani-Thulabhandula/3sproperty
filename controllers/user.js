@@ -2,22 +2,26 @@
 var User = require('../models/user');
 var jwt = require('jsonwebtoken')
 
-function UserRegister(req, res, done) {
+async function UserRegister(req, res, done) {
+    let user = await User.findOne({ email: req.ValidatedData.email });
+    if (user) {
+        return res.status(409).send({ success: false, message: "User Already exisits" })
+    }
     let newUser = new User(req.ValidatedData);
     return newUser.save().then(us => {
         jwt.sign({ id: us._id }, 'secret', { algorithm: 'HS256' }, function (err, token) {
             return res.status(201).send(
                 {
                     success: true,
-                    message: "User regitered success.",
-                    userInfo: { first_name: us.first_name, email: us.email, id: us._id },
+                    message: "User registred success.",
+                    userInfo: { name: us.first_name, email: us.email, id: us._id, avatar: us.avatar },
                     token
                 }
             )
         }).catch(err => {
-            return res.send({
+            return res.status(400).send({
                 success: false,
-                message: "User regitered Failed.",
+                message: "User registred Failed.",
                 error: err
             });
         });
@@ -36,7 +40,7 @@ function UserLogin(req, res, done) {
 
 
 function UserUpdate(req, res, done) {
-    let data = req.ValidatedData;
+    let data = req.body;
     return User.findOne({ email: req.user.email }, function (err, user) {
         if (err) {
             return res.staus(400).send({
@@ -44,11 +48,12 @@ function UserUpdate(req, res, done) {
                 message: "User Doest not exists."
             });
         }
-        doc.first_name = data.name;
-        doc.last_name = data.name;
-        doc.phone = data.phone;
-        doc.email = data.email;
-        doc.save((user) => {
+        user.first_name = data.first_name;
+        user.last_name = data.last_name;
+        user.phone = data.phone;
+        user.email = data.email;
+        user.avatar = data.avatar;
+        user.save((suser) => {
             return res.status(200).send({
                 success: true,
                 message: "User Updated success."
@@ -65,7 +70,14 @@ function getProfile(req, res, done) {
                 message: "User Doest not exists."
             })
         }
-        return res.status(200).send({ id: user._id, email: user.email, first_name: user.first_name, last_name: user.last_name, phone: user.phone })
+        return res.status(200).send({
+            id: user._id,
+            email: user.email,
+            first_name: user.first_name,
+            last_name: user.last_name,
+            phone: user.phone,
+            avatar: user.avatar
+        })
     });
 }
 

@@ -12,6 +12,7 @@ import { RouterModule } from '@angular/router';
 import { MatRippleModule } from '@angular/material/core';
 import { ToolbarNotificationsDropdownComponent } from './toolbar-notifications-dropdown/toolbar-notifications-dropdown.component';
 import { IconModule } from '@visurel/iconify-angular';
+import {MatBadgeModule} from '@angular/material/badge';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { IconModule } from '@visurel/iconify-angular';
     RelativeDateTimeModule,
     RouterModule,
     MatRippleModule,
-    IconModule
+    IconModule,
+    MatBadgeModule
   ],
   exports: [ToolbarNotificationsComponent],
   entryComponents: [ToolbarNotificationsDropdownComponent]

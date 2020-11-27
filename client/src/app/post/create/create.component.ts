@@ -29,7 +29,6 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
-import data from '@iconify/icons-ic/keyboard-backspace';
 
 
 @Component({
@@ -112,12 +111,8 @@ export class CreateComponent implements OnInit {
         this.getPostById(r.id);
       } else {
         this.isUpdate = false;
-
       }
-
     })
-
-
     this.getDropDowns();
     this.inItForm();
   }
@@ -144,7 +139,7 @@ export class CreateComponent implements OnInit {
   submit() {
     console.log({ ...this.form.value, images: this.files.map(f => f.path) }, "FORM VALID ==>", this.form.valid);
     if (this.form.valid) {
-      var body = { ...this.form.value, images: this.files.map(f => f.path) };
+      var body = { ...this.form.value, images: this.files };
       if (this.isUpdate) {
         this.apiService.updateProperty({ ...body, id: this.postId }).subscribe(r => {
           if (r['success']) {
@@ -182,7 +177,7 @@ export class CreateComponent implements OnInit {
 
   getPostById(id) {
     this.apiService.getPropertyById(id).subscribe((res: any) => {
-      this.form.patchValue({ ...res, furnishing: res.furnishing._id, type: res.type._id, property_type: res.property_type._id });
+      this.form.patchValue({ ...res, furnishing: res.furnishing, type: res.type, property_type: res.property_type });
       this.files = res.images
     })
   }

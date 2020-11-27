@@ -22,7 +22,8 @@ const UserSchema = new Schema({
     },
     email_verified: {
         type: Boolean,
-        default: false
+        default: false,
+        unique: true
     },
     email_verify_token: {
         type: String,
@@ -52,6 +53,7 @@ const UserSchema = new Schema({
     billing_address: { type: String, default: '' },
     shipping_address: { type: String, default: '' },
     role: { type: String, enum: ['admin', 'user'], default: 'user' },
+    status: { type: String, enum: ['online', 'away', 'markaway'], default: 'away' },
     permission: [
         {
             type: { type: Schema.Types.ObjectId, ref: 'permissionType', required: true },

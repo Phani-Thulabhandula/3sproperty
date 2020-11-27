@@ -18,7 +18,8 @@ import { stagger20ms } from '../../../@vex/animations/stagger.animation';
 import { ScrollbarComponent } from '../../../@vex/components/scrollbar/scrollbar.component';
 import { ChatService } from '../chat.service';
 import icMenu from '@iconify/icons-ic/twotone-menu';
-import { chats } from '../../static_data/chats';
+import { AuthService } from '../../../@vex/services/auth.service';
+// import { chats } from '../../static_data/chats';
 
 
 @UntilDestroy()
@@ -34,8 +35,8 @@ import { chats } from '../../static_data/chats';
 })
 export class ChatConversationComponent implements OnInit {
 
-  chat: Chat;
-  messages: ChatMessage[];
+  chat: any;
+  messages: any[] = [];
 
   form = new FormGroup({
     message: new FormControl()
@@ -49,43 +50,56 @@ export class ChatConversationComponent implements OnInit {
   icSend = icSend;
   icMenu = icMenu;
   trackById = trackById;
-
+  userInfo = {
+    id: ''
+  }
   @ViewChild(ScrollbarComponent, { static: true }) scrollbar: ScrollbarComponent;
 
   constructor(private route: ActivatedRoute,
-              private chatService: ChatService,
-              private cd: ChangeDetectorRef) { }
+    private chatService: ChatService,
+    public authService: AuthService,
+    private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
-    this.route.paramMap.pipe(
-      map(paramMap => +paramMap.get('chatId')),
-      untilDestroyed(this)
-    ).subscribe(chatId => {
-      this.messages = [];
-      this.cd.detectChanges();
-      this.chat = chats.find(chat => chat.id === chatId);
-      this.chat.unreadCount = 0;
-      this.filterMessages(chatId);
-      this.cd.detectChanges();
+    this.userInfo = this.authService.userInfo;
 
-      this.scrollToBottom();
+    this.route.params.subscribe((params: any) => {
+      console.log(params);
+
+      this.messages = [];
+      this.getMessages(params.chatId)
+      // this.cd.detectChanges();
+      // this.chat = chats.find(chat => chat.id === chatId);
+      // this.chat.unreadCount = 0;
+      // this.filterMessages(chatId);
+      // this.cd.detectChanges();
+
+      // this.scrollToBottom();
     });
   }
 
-  filterMessages(id: ChatMessage['id']) {
-    this.messages = chatMessages.filter(message => message.id === id);
-  }
+  // filterMessages(id: ChatMessage['id']) {
+  //   this.messages = chatMessages.filter(message => message.id === id);
+  // }
 
   send() {
-    this.messages.push({
-      id: this.chat.id,
-      from: 'me',
-      message: this.form.get('message').value
-    });
+    console.log("FDgfsd");
 
-    this.form.get('message').setValue('');
+    if (this.form.get("message").value) {
+      let message = {
+        from: this.userInfo.id,
+        to: this.chat.from,
+        message: this.form.get("message").value,
+        post_id: this.chat.post_id
+      }
+      this.messages.push({ ...message });
+      this.form.get('message').setValue('');
+      this.chatService.sendPostMessage(message).subscribe((res: any) => {
+        console.log(res);
 
-    this.cd.detectChanges();
+      })
+    }
+    // this.cd.detectChanges();
     this.scrollToBottom();
   }
 
@@ -104,5 +118,21 @@ export class ChatConversationComponent implements OnInit {
   closeDrawer() {
     this.chatService.drawerOpen.next(false);
     this.cd.markForCheck();
+  }
+
+  getMessages(chat_id) {
+    this.chatService.getChatMessages(chat_id).subscribe((resp: any) => {
+      this.messages = resp.messages || [];
+      this.chat = resp.chat;
+      this.cd.detectChanges();
+
+    })
+  }
+
+  getTitle(chat) {
+    if (chat && chat.from && chat.post_id) {
+      return `${chat.from.first_name} (${chat.post_id.title})`
+    }
+    return ''
   }
 }

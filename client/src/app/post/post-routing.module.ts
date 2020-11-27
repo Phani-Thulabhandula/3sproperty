@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateComponent } from './create/create.component';
 import { MypostsComponent } from './myposts/myposts.component';
 import { ViewComponent } from './view/view.component';
+import { ViewallComponent } from './viewall/viewall.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'view/:id',
     component: ViewComponent,
+  },
+  {
+    path: 'search',
+    component: ViewallComponent,
   }
 ];
 

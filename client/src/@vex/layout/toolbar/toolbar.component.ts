@@ -25,6 +25,7 @@ import icSearch from '@iconify/icons-ic/twotone-search';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationComponent } from '../../dialogs/authentication/authentication.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'vex-toolbar',
@@ -60,28 +61,29 @@ export class ToolbarComponent implements OnInit {
   icReceipt = icReceipt;
   icDoneAll = icDoneAll;
   icArrowDropDown = icArrowDropDown;
-
   isLoggedIn$ = this.authService.isLoggedIn$;
   userInfo: any = {}
+  unReadNotifications = 0;
 
   constructor(private layoutService: LayoutService,
     private authService: AuthService,
     private configService: ConfigService,
     private dialog: MatDialog,
     private navigationService: NavigationService,
+    private notifyService: NotificationService,
     private popoverService: PopoverService) {
   }
 
   ngOnInit() {
+    this.getNotifications();
+    setInterval(() => {
+      this.getNotifications();
+    }, 9000);
+    this.authService.userInfo$.subscribe(userInfo => {
+      this.userInfo = userInfo;
+    });
     if (this.authService.isLoggedIn$) {
-      console.log("LOggedINN");
-      try {
-        let user = JSON.parse(localStorage.getItem('user'))
-        this.userInfo = user
-      } catch (error) {
-        console.log(error);
-
-      }
+      this.userInfo = this.authService.userInfo;
     }
   }
 
@@ -128,5 +130,11 @@ export class ToolbarComponent implements OnInit {
 
   openSearch() {
     this.layoutService.openSearch();
+  }
+
+  getNotifications() {
+    this.notifyService.getNotification().subscribe((res: any) => {
+      this.unReadNotifications = res.unread_count || 0;
+    });
   }
 }

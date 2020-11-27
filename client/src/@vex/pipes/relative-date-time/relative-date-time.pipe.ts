@@ -10,12 +10,9 @@ export class RelativeDateTimePipe implements PipeTransform {
     if (!value) {
       return;
     }
-
     if (!(value instanceof DateTime)) {
       value = DateTime.fromISO(value);
     }
-
     return value.toRelative();
   }
-
 }

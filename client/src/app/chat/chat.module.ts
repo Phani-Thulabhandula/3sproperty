@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatMenuModule } from '@angular/material/menu';
 import { ScrollbarModule } from '../../@vex/components/scrollbar/scrollbar.module';
+import { RelativeDateTimeModule } from '../../@vex/pipes/relative-date-time/relative-date-time.module';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { ScrollbarModule } from '../../@vex/components/scrollbar/scrollbar.modul
     ReactiveFormsModule,
     ScrollingModule,
     MatMenuModule,
-    ScrollbarModule
+    ScrollbarModule,
+    RelativeDateTimeModule
   ]
 })
 export class ChatModule {

@@ -8,6 +8,10 @@ const { v4: uuidv4 } = require('uuid');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var postsRouter = require('./routes/post');
+var postMessagesRouter = require('./routes/post_message');
+var notificationsRouter = require('./routes/notification');
+
+
 const passport = require('passport');
 var bodyParser = require("body-parser");
 
@@ -50,6 +54,9 @@ app.get('/auth', (req, res) => {
 
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
+app.use('/post-messages', postMessagesRouter);
+app.use('/notifications', notificationsRouter);
+
 
 app.use('/', indexRouter)
 

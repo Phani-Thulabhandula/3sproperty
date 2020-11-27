@@ -27,11 +27,12 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { NgImageSliderModule } from 'ng-image-slider';
 import { ViewComponent } from './view/view.component';
+import { ViewallComponent } from './viewall/viewall.component';
 // import {IvyCarouselModule} from 'angular-responsive-carousel';
 
 
 @NgModule({
-  declarations: [PostComponent, CreateComponent, MypostsComponent, ViewComponent],
+  declarations: [PostComponent, CreateComponent, MypostsComponent, ViewComponent, ViewallComponent],
   imports: [
     CommonModule,
     PostRoutingModule,

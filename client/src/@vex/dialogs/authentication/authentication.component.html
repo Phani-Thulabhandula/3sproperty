@@ -25,6 +25,9 @@
                 <span class="text-center">
                     Experience a joyful journey
                 </span>
+                <span class="text-center">
+                    to find your sweet home.
+                </span>
                 <span fxFlex></span>
             </div>
 
@@ -47,15 +50,15 @@
                     </h4>
                 </div>
                 <ng-container *ngIf="viewType == 0">
+                    <small @stagger class="text-red my-2">{{login_message}}</small>
                     <form fxLayout="column" fxLayoutAlign="center center" class="w-full" [formGroup]="loginForm"
                         (ngSubmit)="login()" fxLayoutGap="20px">
-                        <mat-form-field class="vex-flex-form-field" appearance="standard" color="primary"
+                        <mat-form-field class="vex-flex-form-field" appearance="outline" color="primary"
                             class="w-full px-4">
                             <mat-label>Email</mat-label>
                             <input matInput type="text" formControlName="email">
-                            <button mat-button matSuffix mat-icon-button aria-label="Clear" type="button"
-                                (click)="clearLoginInput('email')">
-                                <mat-icon [icIcon]="icClose"></mat-icon>
+                            <button matSuffix aria-label="Clear" type="button" (click)="clearLoginInput('email')">
+                                <mat-icon [icIcon]="icClose" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your email!</mat-hint>
                             <mat-error
@@ -66,12 +69,11 @@
                                 Email is <strong>required</strong>
                             </mat-error>
                         </mat-form-field>
-                        <mat-form-field appearance="standard" class="vex-flex-form-field" color="primary"
+                        <mat-form-field appearance="outline" class="vex-flex-form-field" color="primary"
                             class="w-full px-4">
                             <mat-label>Password</mat-label>
                             <input matInput [type]="loginPassHide ? 'password' : 'text'" formControlName="password">
-                            <button matSuffix mat-button mat-icon-button aria-label="Clear" type="button"
-                                (click)="loginPassHide = !loginPassHide">
+                            <button matSuffix aria-label="Clear" type="button" (click)="loginPassHide = !loginPassHide">
                                 <mat-icon [icIcon]="loginPassHide ? icShow: icHide" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your password!</mat-hint>
@@ -82,13 +84,15 @@
                             <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
                                 Password is <strong>required</strong>
                             </mat-error>
-
                         </mat-form-field>
                         <span class="text-primary cursor-pointer hover:underline" (click)="changeView(2)">
                             Forgot Password?
                         </span>
                         <div>
-                            <button mat-raised-button color="primary" type="submit">Login</button>
+                            <mat-progress-spinner class="example-margin" color="primary" mode="indeterminate"
+                                *ngIf="isLoading">
+                            </mat-progress-spinner>
+                            <button mat-raised-button color="primary" type="submit" *ngIf="!isLoading">Login</button>
                         </div>
                         <span class="text-primary cursor-pointer hover:underline pb-8" (click)="changeView(1)">
                             Not a member?
@@ -96,20 +100,21 @@
                     </form>
                 </ng-container>
                 <ng-container *ngIf="viewType == 1">
+                    <small @stagger class="text-red my-2">{{register_message}}</small>
                     <form fxLayout="column" fxLayoutAlign="center center" class="w-full" [formGroup]="registerForm"
                         (ngSubmit)="register()" fxLayoutGap="20px">
                         <mat-form-field class="vex-flex-form-field" appearance="fill" color="primary"
                             class="w-full px-4">
                             <mat-label>Name</mat-label>
-                            <input matInput type="text" formControlName="first_name">
-                            <button mat-button matSuffix mat-icon-button aria-label="Clear" type="button"
+                            <input matInput type="text" name="name" formControlName="first_name" autocomplete="name">
+                            <button matSuffix aria-label="Clear" type="button"
                                 (click)="clearRegisterInput('first_name')">
-                                <mat-icon [icIcon]="icClose"></mat-icon>
+                                <mat-icon [icIcon]="icClose" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your Name!</mat-hint>
                             <mat-error
                                 *ngIf="registerForm.controls['first_name'].invalid && !registerForm.controls['first_name'].hasError('required')">
-                                Please enter a valid email address
+                                Please enter a valid Name
                             </mat-error>
                             <mat-error *ngIf="registerForm.controls['first_name'].hasError('required')">
                                 Name is <strong>required</strong>
@@ -118,10 +123,9 @@
                         <mat-form-field class="vex-flex-form-field" appearance="fill" color="primary"
                             class="w-full px-4">
                             <mat-label>Email</mat-label>
-                            <input matInput type="text" formControlName="email">
-                            <button mat-button matSuffix mat-icon-button aria-label="Clear" type="button"
-                                (click)="clearRegisterInput('email')">
-                                <mat-icon [icIcon]="icClose"></mat-icon>
+                            <input matInput type="email" name="email" formControlName="email" autocomplete="email">
+                            <button matSuffix aria-label="Clear" type="button" (click)="clearRegisterInput('email')">
+                                <mat-icon [icIcon]="icClose" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your email!</mat-hint>
                             <mat-error
@@ -139,8 +143,7 @@
                             class="w-full px-4 ">
                             <mat-label>Password</mat-label>
                             <input matInput [type]="regPassHide ? 'password' : 'text'" formControlName="password">
-                            <button matSuffix mat-button mat-icon-button aria-label="Clear" type="button"
-                                (click)="regPassHide = !regPassHide">
+                            <button matSuffix aria-label="Clear" type="button" (click)="regPassHide = !regPassHide">
                                 <mat-icon [icIcon]="regPassHide ? icShow: icHide" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your password!</mat-hint>
@@ -157,20 +160,24 @@
                                 Already a member?
                             </span>
                             <div class="my-2">
-                                <button mat-raised-button color="primary" type="submit">Register</button>
+                                <mat-progress-spinner class="example-margin" color="primary" mode="indeterminate" style="height: 30px;"
+                                    *ngIf="isLoading">
+                                </mat-progress-spinner>
+                                <button mat-raised-button color="primary" type="submit"
+                                    *ngIf="!isLoading">Register</button>
                             </div>
                         </div>
-
                     </form>
                 </ng-container>
                 <ng-container *ngIf="viewType == 2">
-                    <form fxLayout="column" fxLayoutAlign="center center" class="w-full mt-8" fxLayoutGap="20px" [formGroup]="forgotPassowrdForm">
+                    <form fxLayout="column" fxLayoutAlign="center center" class="w-full mt-8" fxLayoutGap="20px"
+                        [formGroup]="forgotPassowrdForm">
                         <mat-form-field class="vex-flex-form-field" appearance="fill" color="primary"
                             class="w-full px-4">
                             <mat-label>Email</mat-label>
-                            <input matInput type="text" formControlName="email">
+                            <input matInput type="email" formControlName="email">
                             <button mat-button matSuffix mat-icon-button aria-label="Clear">
-                                <mat-icon [icIcon]="icClose"></mat-icon>
+                                <mat-icon [icIcon]="icClose" size="20px"></mat-icon>
                             </button>
                             <mat-hint>Enter your email!</mat-hint>
                         </mat-form-field>

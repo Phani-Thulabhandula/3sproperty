@@ -5,6 +5,43 @@
                 <br>
                 a home
             </h1>
+            <br>
+            <div class="imageAnimatedPoint">
+                <div class="bottomPoints" fxLayout="row" fxLayoutGap="30px">
+                    <div class="point" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <span class="dot">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.357 342.357" class="dot"
+                                fill="undefined">
+                                <polygon
+                                    points="290.04,33.286 118.861,204.427 52.32,137.907 0,190.226 118.862,309.071 342.357,85.606">
+                                </polygon>
+                            </svg>
+                        </span>
+                        <span>Exclusive Homes</span>
+                    </div>
+                    <div class="point" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <span class="dot">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.357 342.357" class="dot"
+                                fill="undefined">
+                                <polygon
+                                    points="290.04,33.286 118.861,204.427 52.32,137.907 0,190.226 118.862,309.071 342.357,85.606">
+                                </polygon>
+                            </svg>
+                        </span>
+                        <span>Assisted Visits</span>
+                    </div>
+                    <div class="point" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <span class="dot"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 342.357 342.357"
+                                class="dot" fill="undefined">
+                                <polygon
+                                    points="290.04,33.286 118.861,204.427 52.32,137.907 0,190.226 118.862,309.071 342.357,85.606">
+                                </polygon>
+                            </svg>
+                        </span>
+                        <span>Easy Move-In</span>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="w-full" fxFlex="50">
             <img src="assets/img/dashboard.png" style="height: 180px;" />
@@ -13,12 +50,90 @@
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px" class="mx-12 my-12">
         <div class="flex items-center border-b border-teal-500 py-2 px-gutter w-full">
             <input
-            class="appearance-none block w-full bg-gray-200 text-gray-700 border-2 border-black rounded py-4 px-4 mb-4 leading-tight focus:outline-none focus:bg-white focus:border-primary"
-            id="grid-password" type="text" placeholder="Add Location...">
-            <button class="flex-shrink-0 bg-primary text-xl border-4 text-white py-2 px-8  mb-4 rounded" type="button">
-              Search
+                class="appearance-none block w-full bg-gray-200 text-gray-700 border-3 border-black rounded py-4 px-4 mb-4 leading-tight focus:outline-none focus:bg-white focus:border-primary"
+                id="grid-password" type="text" placeholder="Enter keywords..." [(ngModel)]="search"
+                (keyup.enter)="navigate()">
+            <button class="flex-shrink-0 bg-primary text-xl border-4 text-white py-2 px-8  mb-4 rounded" type="button"
+                (click)="navigate()">
+                Search
             </button>
         </div>
-       
+    </div>
+    <div class="text-center w-full my-8">
+        <a [routerLink]="['/posts/search']" class="mt-8 text-primary hover:underline">See all posts</a>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" class="mt-4">
+
+        <div class="rounded-full bg-amber w-1/3 p-2">
+            <a [routerLink]="['/posts/create']" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <img class="ownerSpriteIcon" src="/assets/img/own_property.png" style="height: 28px;">
+                <span class="font-semibold">
+                    Do you own a property?
+                </span>
+                <span>List it here</span> </a>
+        </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center start" class="mt-12 w-full" *ngIf=recentPosts.length>
+        <h1>Latest Posts</h1>
+        <div fxLayout="row" fxLayoutAlign="center center" class="mt-16 w-full" fxLayoutGap="20px"
+            *ngIf="!isRecentPostsLoading">
+
+            <a class="card_post card cursor-pointer" style="height: 300px;" [routerLink]="['/posts/view/'+ post._id]"
+                *ngFor="let post of recentPosts" fxFlex="20">
+                <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
+                    style="height: 185px;width:300px">
+                <span class="p-4" fxLayout="row">$<h3>{{post.rent}}</h3></span>
+                <span class="p-2 text1 text-gray">
+                    {{post.description}}
+                </span>
+            </a>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="mt-16 w-full" fxLayoutGap="20px"
+            *ngIf="isRecentPostsLoading">
+
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+        </div>
+    </div>
+
+    <div fxLayout="row" fxLayoutAlign="center center" class="mt-16 w-full">
+        <h1 fxFlex="20">Benefits of<br class="hidden-xs"> renting with <br class="hidden-xs">us</h1>
+        <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20">
+            <img class="ownerSpriteIcon" src="/assets/img/zero_brokrage.png" style="height: 48px;">
+            <span class="mt-4 text-xl">Zero <br class="hidden-xs"> Brokerage Options</span>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20">
+            <img class="ownerSpriteIcon" src="/assets/img/instat_depo.png" style="height: 48px;">
+            <span class="mt-4 text-xl">Instant <br class="hidden-xs"> Deposit Refund</span>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center" fxFlex="20">
+            <img class="ownerSpriteIcon" src="/assets/img/aff_rents.png" style="height: 48px;">
+            <span class="mt-4 text-xl">Affordable <br class="hidden-xs">Rents</span>
+        </div>
+    </div>
+</div>
+
+<div class="lower w-full border-t border-gray-light mt-4 card">
+    <div class="fullscreenWrapper mobileRightPadding p-8 text-gray container">
+        <div class="copyright">© 2020 3sProperty Technologies.</div>
     </div>
 </div>

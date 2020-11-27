@@ -7,11 +7,18 @@ import icShow from '@iconify/icons-ic/round-visibility';
 import icHide from '@iconify/icons-ic/round-visibility-off';
 
 import { AuthService } from '../../services/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { stagger20ms } from '../../animations/stagger.animation';
+import { fadeInUp400ms } from '../../animations/fade-in-up.animation';
 
 @Component({
   selector: 'vex-authentication',
   templateUrl: './authentication.component.html',
-  styleUrls: ['./authentication.component.scss']
+  styleUrls: ['./authentication.component.scss'],
+  animations: [
+    fadeInUp400ms,
+    stagger20ms
+  ]
 })
 export class AuthenticationComponent implements OnInit {
   icClose = icClose;
@@ -20,13 +27,15 @@ export class AuthenticationComponent implements OnInit {
   icHide = icHide;
   loginForm: FormGroup;
   registerForm: FormGroup;
-  forgotPassowrdForm:FormGroup;
+  forgotPassowrdForm: FormGroup;
   viewType = 0;
   history: any = [];
   isLoading: boolean = false;
   emailExists: boolean = false;
   loginPassHide: boolean = true;
   regPassHide: boolean = true;
+  login_message: String = "";
+  register_message: String = "";
 
   constructor(private dialogRef: MatDialogRef<AuthenticationComponent>,
     private fb: FormBuilder,
@@ -81,10 +90,10 @@ export class AuthenticationComponent implements OnInit {
   }
 
   login() {
+    this.login_message = "";
     if (this.loginForm.valid) {
       this.isLoading = true;
-      this.authService.login(this.loginForm.getRawValue()).subscribe((res:any) => {
-        console.log(res);
+      this.authService.login(this.loginForm.getRawValue()).subscribe((res: any) => {
         if (res['userInfo']) {
           this.authService.setUserInfo(res['userInfo']);
           localStorage.setItem('user', JSON.stringify(res['userInfo']));
@@ -95,6 +104,17 @@ export class AuthenticationComponent implements OnInit {
         this.authService.setLoggedIn(true);
         this.dialogRef.close();
       }, err => {
+        console.log(err instanceof HttpErrorResponse, err.status, err.error.message);
+
+        if (err instanceof HttpErrorResponse) {
+          switch (err.status) {
+            case 404:
+              this.login_message = err.error.message || "Email Not Found."
+              break;
+            default:
+              break;
+          }
+        }
         console.log(err);
         this.isLoading = false;
       });
@@ -105,7 +125,7 @@ export class AuthenticationComponent implements OnInit {
     this.emailExists = false;
     if (this.registerForm.valid) {
       this.isLoading = true;
-      this.authService.register(this.registerForm.getRawValue()).subscribe((res:any) => {
+      this.authService.register(this.registerForm.getRawValue()).subscribe((res: any) => {
         if (res['userInfo']) {
           this.authService.setUserInfo(res['userInfo']);
           localStorage.setItem('user', JSON.stringify(res['userInfo']));
@@ -117,9 +137,18 @@ export class AuthenticationComponent implements OnInit {
         this.isLoading = false;
         this.onNoClick();
       }, err => {
+        if (err instanceof HttpErrorResponse) {
+          switch (err.status) {
+            case 409:
+              this.register_message = err.error.message || "Email Already exists."
+              break;
+            default:
+              break;
+          }
+        }
         console.log(err);
-        this.emailExists = true;
         this.isLoading = false;
+        this.emailExists = true;
 
       })
     }

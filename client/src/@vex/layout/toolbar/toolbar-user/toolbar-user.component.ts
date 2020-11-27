@@ -13,28 +13,21 @@ export class ToolbarUserComponent implements OnInit {
 
   dropdownOpen: boolean;
   icPerson = icPerson;
-  userInfo:any = {};
+  userInfo: any = {};
   constructor(private popover: PopoverService,
-            public authService: AuthService,
-              private cd: ChangeDetectorRef) { }
+    public authService: AuthService,
+    private cd: ChangeDetectorRef) { }
 
   ngOnInit() {
     if (this.authService.isLoggedIn$) {
-      console.log("LOggedINN");
-      try {
-        let user = JSON.parse(localStorage.getItem('user'))
-        this.userInfo = user
-      } catch (error) {
-        console.log(error);
-
-      }
+      this.userInfo = this.authService.userInfo;
     }
   }
 
-  logout(){
+  logout() {
     this.authService.logout();
   };
-  
+
 
   showPopover(originRef: HTMLElement) {
     this.dropdownOpen = true;

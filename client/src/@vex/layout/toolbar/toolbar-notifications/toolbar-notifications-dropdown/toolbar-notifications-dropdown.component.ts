@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Notification } from '../interfaces/notification.interface';
 import { DateTime } from 'luxon';
 import { trackById } from '../../../../utils/track-by';
@@ -14,6 +14,9 @@ import icDescription from '@iconify/icons-ic/twotone-description';
 import icFeedback from '@iconify/icons-ic/twotone-feedback';
 import icVerifiedUser from '@iconify/icons-ic/twotone-verified-user';
 import icFileCopy from '@iconify/icons-ic/twotone-file-copy';
+import { AuthService } from '../../../../services/auth.service';
+import { Router } from '@angular/router';
+import { PopoverRef } from '../../../../components/popover/popover-ref';
 
 @Component({
   selector: 'vex-toolbar-notifications-dropdown',
@@ -22,75 +25,49 @@ import icFileCopy from '@iconify/icons-ic/twotone-file-copy';
 })
 export class ToolbarNotificationsDropdownComponent implements OnInit {
 
-  notifications: Notification[] = [
-    {
-      id: '1',
-      label: 'New Order Received',
-      icon: icShoppingBasket,
-      colorClass: 'text-primary',
-      datetime: DateTime.local().minus({ hour: 1 })
-    },
-    {
-      id: '2',
-      label: 'New customer has registered',
-      icon: icAccountCircle,
-      colorClass: 'text-orange',
-      datetime: DateTime.local().minus({ hour: 2 })
-    },
-    {
-      id: '3',
-      label: 'Campaign statistics are available',
-      icon: icInsertChart,
-      colorClass: 'text-purple',
-      datetime: DateTime.local().minus({ hour: 5 })
-    },
-    {
-      id: '4',
-      label: 'Project has been approved',
-      icon: icCheckCircle,
-      colorClass: 'text-green',
-      datetime: DateTime.local().minus({ hour: 9 })
-    },
-    {
-      id: '5',
-      label: 'Client reports are available',
-      icon: icDescription,
-      colorClass: 'text-primary',
-      datetime: DateTime.local().minus({ hour: 30 })
-    },
-    {
-      id: '6',
-      label: 'New review received',
-      icon: icFeedback,
-      colorClass: 'text-orange',
-      datetime: DateTime.local().minus({ hour: 40 }),
-      read: true
-    },
-    {
-      id: '7',
-      label: '22 verified registrations',
-      icon: icVerifiedUser,
-      colorClass: 'text-green',
-      datetime: DateTime.local().minus({ hour: 60 })
-    },
-    {
-      id: '8',
-      label: 'New files available',
-      icon: icFileCopy,
-      colorClass: 'text-amber',
-      datetime: DateTime.local().minus({ hour: 90 })
-    }
-  ];
+  notifications: any[] = [];
 
   icSettings = icSettings;
   icChevronRight = icChevronRight;
   icClearAll = icClearAll;
-  icNotificationsOff = icNotificationsOff;
+  icNotificationsOff;
   trackById = trackById;
 
-  constructor() { }
+  constructor(private cd: ChangeDetectorRef,
+    public authService: AuthService,
+    private router: Router,
+    private popoverRef: PopoverRef<ToolbarNotificationsDropdownComponent>) { }
 
   ngOnInit() {
+    this.getNotifications();
+  }
+  getRoute(n) {
+    if (n.type == "chat") {
+      this.router.navigate(["/chat/" + n.ref])
+    } else {
+      this.router.navigate(["/posts/view/" + n.ref])
+    };
+    this.authService.markAllReadNotification({}).subscribe(res => {
+
+    });
+    this.close();
+  }
+
+  getNotifications() {
+    this.authService.getNotification().subscribe((res: any) => {
+      this.notifications = res.notifications || [];
+    });
+  }
+
+  markAllAsRead() {
+    this.authService.markAllReadNotification({}).subscribe(res => {
+      console.log(res);
+    })
+  }
+
+  close() {
+    this.popoverRef.close();
   }
 
 }
+//

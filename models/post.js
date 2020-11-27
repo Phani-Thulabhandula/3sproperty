@@ -7,7 +7,11 @@ const PostSchema = new Schema({
         min: 3,
         max: 256,
         type: String,
-        default: ''
+        default: '',
+        text: true,
+        trim: true,
+        index: true
+
     },
     user_id: {
         required: true,
@@ -16,21 +20,23 @@ const PostSchema = new Schema({
     },
     type: {
         required: true,
-        type: mongoose.Schema.ObjectId,
-        ref: 'PostType',
-        default: ''
+        type: String,
+        default: '',
+        text: true
     },
     property_type: {
         required: true,
-        type: mongoose.Schema.ObjectId,
-        ref: 'PostPropertyType',
-        default: ''
+        type: String,
+        default: '',
+        text: true
+
     },
     furnishing: {
         required: true,
-        type: mongoose.Schema.ObjectId,
-        ref: 'PostFurnishing',
-        default: ''
+        type: String,
+        default: '',
+        text: true
+
     },
     rent: {
         required: true,
@@ -52,12 +58,14 @@ const PostSchema = new Schema({
         min: 3,
         max: 4000,
         type: String,
-        default: ''
+        default: '',
+        trim: true
     },
     location: {
         required: true,
         type: String,
-        default: ''
+        default: '',
+        trim: true
     },
     isAvailable: {
         required: true,
@@ -76,36 +84,31 @@ const PostSchema = new Schema({
         min: 3,
         max: 256,
         type: String,
-        default: ''
+        default: '',
+        trim: true
     },
+    images: [{
+        path: {
+            required: true,
+            type: String,
+            default: ''
+        }
+    }
+    ]
 }, {
     timestamps: {
         createdAt: 'created_at',
         updatedAt: 'updated_at'
     }
-})
-
-
-
-var PostImagesSchema = new Schema({
-    post_id: {
-        required: true,
-        type: mongoose.Schema.ObjectId,
-        default: ''
-    },
-    path: {
-        required: true,
-        type: String,
-        default: ''
-    }
 });
+
+PostSchema.index({"title": 'text'})
 
 var PostTypeSchema = new Schema({
     name: {
         required: true,
         type: String,
         unique: true
-
     }
 });
 
@@ -115,8 +118,6 @@ var PostPropertyTypeSchema = new Schema({
         required: true,
         type: String,
         unique: true
-
-
     }
 })
 
@@ -126,13 +127,8 @@ var PostFurnishingTypeSchema = new Schema({
         required: true,
         type: String,
         unique: true
-
-
     }
 });
-
-
-
 
 
 // var PostMessages = new Schema({
@@ -140,14 +136,12 @@ var PostFurnishingTypeSchema = new Schema({
 // })
 
 var Post = mongoose.model('Post', PostSchema)
-var PostImage = mongoose.model('PostImage', PostImagesSchema)
 var PostType = mongoose.model('PostType', PostTypeSchema)
 var PostPropertyType = mongoose.model('PostPropertyType', PostPropertyTypeSchema)
 var PostFurnishing = mongoose.model('PostFurnishing', PostFurnishingTypeSchema)
 
 module.exports = {
     Post,
-    PostImage,
     PostType,
     PostPropertyType,
     PostFurnishing

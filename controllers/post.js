@@ -9,14 +9,10 @@ var {
 
 function UserPostCreate(req, res, next) {
     var data = { ...req.ValidatedData }
-    console.log(req.user);
-
-    var images = data.images || [];
+    console.log(req.ValidatedData);
     try {
         return Post.create({ ...data, isAvailable: true, user_id: req.user._id }).then(e => {
-            return PostImage.create(images.map(i => { return { path: i, post_id: e._id } })).then(re => {
-                return res.send({ success: true });
-            });
+            return res.send({ success: true });
         });
     } catch (error) {
         console.log(error);
@@ -30,22 +26,16 @@ async function UserPostUpdate(req, res, next) {
     try {
         var id = req.body.id;
         var data = req.body
-        var images = req.body.images;
         delete data.id
-        delete data.images
         var post = await Post.update({ _id: id }, data);
-        var del = await PostImage.deleteMany({ post_id: id });
-        PostImage.create(images.map(i => { return { path: i, post_id: id } })).then(re => {
-            return res.send({ success: true });
-        });
+        return res.send({ success: true });
     } catch (error) {
         res.send({ success: false, error: error })
     }
-
 }
 
 function getAllDropDowns(req, res, next) {
-    return Promise.all([PostType.find({}).sort({ "name": 1}), PostPropertyType.find({}).sort({ "name": 1}), PostFurnishing.find({})]).then(values => {
+    return Promise.all([PostType.find({}).sort({ "name": 1 }), PostPropertyType.find({}).sort({ "name": 1 }), PostFurnishing.find({})]).then(values => {
         var data = {
             types: values[0],
             property_types: values[1],
@@ -66,8 +56,8 @@ async function getPostById(req, res, next) {
     try {
         if (req.params.id) {
             let id = req.params.id;
-            var [post, images] = await Promise.all([Post.findById(id).populate('furnishing').populate('type').populate('property_type').populate('listed_by').exec(), PostImage.find({ post_id: id })]);
-            res.send({ ...post._doc, images: images })
+            var post = await Post.findById(id).exec();
+            res.send({ ...post._doc })
         } else {
             res.status(400).send({ "message": "Post Not Found" })
         }
@@ -78,10 +68,54 @@ async function getPostById(req, res, next) {
 
 async function getMyPosts(req, res, next) {
     try {
-        var posts = await Post.aggregate([{ "$match": { "user_id": String(req.user._id) } }, {
-            "$lookup": { "from": 'postimages', "localField": '_id', "foreignField": 'post_id', "as": 'images' }
+        var posts = await Post.find({ user_id: req.user._id })
+        res.send({ posts })
+    } catch (error) {
+        console.error(error);
+        res.status(400).send({ "message": "Post Not Found.", error: error })
+    }
+}
+
+
+async function getAllPosts(req, res, next) {
+    try {
+        let sortByQuery = {
+            1: {
+                rent: -1
+            },
+            2: {
+                rent: 1
+            },
+            3: {
+                updated_at: -1
+            }
         }
-        ]);
+        var searchString = req.body.search;
+        var sortBy = sortByQuery[req.body.sortBy];
+        console.log(req.body, searchString);
+        var property_type = req.body.property_type
+        var posts = await Post.find({
+            "$or": [
+                { "title": { "$regex": String(searchString), "$options": "gi" } },
+                { "description": { "$regex": String(searchString), "$options": "gi" } },
+                { "type": { "$regex": String(searchString), "$options": "gi" } },
+                { "property_type": { "$regex": String(searchString), "$options": "gi" } },
+                { "furnishing": { "$regex": String(searchString), "$options": "gi" } },
+
+                { "property_type": { $in: property_type } },
+                { "type": { "$in": [...req.body.type] } },
+                { "furnishing": { "$in": [...req.body.furnishing] } },
+                { "location": { "$regex": String(searchString), "$options": "gi" } }
+            ],
+            isAvailable: true
+            // ,
+            // "property_type": { $in: property_type },
+            // "type": { "$in": [...req.body.type] },
+            // "furnishing": { "$in": [...req.body.furnishing]},
+        }).sort(sortBy)
+        // .skip(20)
+        // .limit(10)
+        // .exec();
         res.send({ posts })
 
     } catch (error) {
@@ -90,11 +124,25 @@ async function getMyPosts(req, res, next) {
     }
 }
 
+
+async function getRecentPosts(req, res, next) {
+    try {
+        var posts = await Post.find({}).sort({ updated_at: -1 }).limit(5).exec();
+        return res.status(200).send(posts);
+    } catch (error) {
+        console.log(error);
+        return res.status(200).send([]);
+    }
+
+}
+
 module.exports = {
     UserPostCreate,
     UserPostUpdate,
     getAllDropDowns,
     getActivePosts,
     getPostById,
-    getMyPosts
+    getMyPosts,
+    getAllPosts,
+    getRecentPosts
 }
