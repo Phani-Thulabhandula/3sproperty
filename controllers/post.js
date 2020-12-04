@@ -70,11 +70,7 @@ async function getPostById(req, res, next) {
 
 async function getMyPosts(req, res, next) {
     try {
-        console.log("--------", mongoose.Types.ObjectId(req.user._id));
-        var user = await User.findById(req.user._id);
-        console.log(user);
-        
-        var posts = await Post.find({ user_id: mongoose.Types.ObjectId(req.user._id) }).exec();
+        var posts = await Post.find({ user_id: req.user._id });
         res.send({ posts });
     } catch (error) {
         console.error(error);
