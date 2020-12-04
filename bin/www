@@ -10,6 +10,7 @@ var debug = require('debug')('3sproperty:server');
 var http = require('http');
 const mongoose = require('mongoose'); 
 const uri = process.env.MONGODB_URI || "mongodb+srv://user1:mongodb@cluster0.o1zql.mongodb.net/rose?retryWrites=true&w=majority";
+    // "mongodb://localhost/rose" || 
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

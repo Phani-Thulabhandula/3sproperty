@@ -81,8 +81,14 @@
 
             <a class="card_post card cursor-pointer" style="height: 300px;" [routerLink]="['/posts/view/'+ post._id]"
                 *ngFor="let post of recentPosts" fxFlex="20">
-                <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
-                    style="height: 185px;width:300px">
+                <ng-container *ngIf="!post?.images.length">
+                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6"
+                        alt="" class="card1__image" style="height: 185px;width:300px">
+                </ng-container>
+                <ng-container *ngIf="post?.images.length">
+                    <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
+                        style="height: 185px;width:300px">
+                </ng-container>
                 <span class="p-4" fxLayout="row">$<h3>{{post.rent}}</h3></span>
                 <span class="p-2 text1 text-gray">
                     {{post.description}}

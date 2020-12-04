@@ -76,9 +76,12 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit() {
     this.getNotifications();
-    setInterval(() => {
-      this.getNotifications();
-    }, 9000);
+    if (this.authService.isLoggedIn$) {
+      setInterval(() => {
+        this.getNotifications();
+      }, 9000);
+    }
+
     this.authService.userInfo$.subscribe(userInfo => {
       this.userInfo = userInfo;
     });

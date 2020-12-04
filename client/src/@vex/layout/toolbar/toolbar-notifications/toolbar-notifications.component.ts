@@ -47,7 +47,6 @@ export class ToolbarNotificationsComponent implements OnInit {
           overlayY: 'top',
         },
       ],
-      data: ["-----------------"]
     });
 
     popoverRef.afterClosed$.subscribe(() => {

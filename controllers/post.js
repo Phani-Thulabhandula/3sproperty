@@ -6,7 +6,9 @@ var {
     PostFurnishing
 } = require('../models/post')
 
-
+var User = require('../models/user')
+const ObjectId = require('mongodb').ObjectID;
+var mongoose = require("mongoose")
 function UserPostCreate(req, res, next) {
     var data = { ...req.ValidatedData }
     console.log(req.ValidatedData);
@@ -68,11 +70,15 @@ async function getPostById(req, res, next) {
 
 async function getMyPosts(req, res, next) {
     try {
-        var posts = await Post.find({ user_id: req.user._id })
-        res.send({ posts })
+        console.log("--------", mongoose.Types.ObjectId(req.user._id));
+        var user = await User.findById(req.user._id);
+        console.log(user);
+        
+        var posts = await Post.find({ user_id: mongoose.Types.ObjectId(req.user._id) }).exec();
+        res.send({ posts });
     } catch (error) {
         console.error(error);
-        res.status(400).send({ "message": "Post Not Found.", error: error })
+        res.status(400).send({ "message": "Post Not Found.", error: error, posts: [] })
     }
 }
 
@@ -89,11 +95,21 @@ async function getAllPosts(req, res, next) {
             3: {
                 updated_at: -1
             }
-        }
+        };
         var searchString = req.body.search;
         var sortBy = sortByQuery[req.body.sortBy];
         console.log(req.body, searchString);
-        var property_type = req.body.property_type
+        var property_type = req.body.property_type;
+        let filters = ["property_type", "type", "furnishing"];
+        var filter_mongod = {}
+        filters.forEach(f => {
+            if (req.body[f] && req.body[f].length) {
+                filter_mongod[f] = { "$in": req.body[f].map(e => String(e)) }
+            };
+        })
+        console.log(filter_mongod, "---");
+
+
         var posts = await Post.find({
             "$or": [
                 { "title": { "$regex": String(searchString), "$options": "gi" } },
@@ -102,14 +118,15 @@ async function getAllPosts(req, res, next) {
                 { "property_type": { "$regex": String(searchString), "$options": "gi" } },
                 { "furnishing": { "$regex": String(searchString), "$options": "gi" } },
 
-                { "property_type": { $in: property_type } },
-                { "type": { "$in": [...req.body.type] } },
-                { "furnishing": { "$in": [...req.body.furnishing] } },
+                // { "property_type": { $in: property_type } },
+                // { "type": { "$in": [...req.body.type] } },
+                // { "furnishing": { "$in": [...req.body.furnishing] } },
                 { "location": { "$regex": String(searchString), "$options": "gi" } }
             ],
             isAvailable: true
-            // ,
-            // "property_type": { $in: property_type },
+            ,
+            ...filter_mongod
+            // "property_type": { "$in": property_type },
             // "type": { "$in": [...req.body.type] },
             // "furnishing": { "$in": [...req.body.furnishing]},
         }).sort(sortBy)
@@ -127,7 +144,7 @@ async function getAllPosts(req, res, next) {
 
 async function getRecentPosts(req, res, next) {
     try {
-        var posts = await Post.find({}).sort({ updated_at: -1 }).limit(5).exec();
+        var posts = await Post.find({ isAvailable: true }).sort({ updated_at: -1 }).limit(5).exec();
         return res.status(200).send(posts);
     } catch (error) {
         console.log(error);

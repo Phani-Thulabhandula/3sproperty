@@ -6,8 +6,8 @@ const passport = require('passport');
 const unlinkAsync = promisify(fs.unlink);
 var AWS = require('aws-sdk')
 // var s3 = new AWS.S3({
-//     "accessKeyId": "34AKIAISB5NF5HRDBUUQ4SMA",
-//     "secretAccessKey": "fT3zvDASAyvhp/ncLj3HaJqZ7dSSSG3sMrPMlzKSDFozdvv/"
+//     "accessKeyId": "3DE4AKIAISB5NF5HRDBUUQ4MA", // NOT ORIGINAL
+//     "secretAccessKey": "fT3zvSDASAyvhp/ncLj3HaJqZ7dSSSG3sMrPMlzKSDFozdvv/"
 // });
 
 // var multerS3 = require('multer-s3')
@@ -24,11 +24,6 @@ var AWS = require('aws-sdk')
 //             cb(null, `${file.fieldname}-${Date.now().toString()}.${file.mimetype.split("/")[1]}`)
 //         }
 //     })
-// })
-
-// const s3 = new AWS.S3({
-//     accessKeyId: process.env.AWS_ID || "AKIAISB5NF5HRBUUQ4MA",
-//     secretAccessKey: process.env.AWS_SECRET || "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"
 // })
 
 // const storage = multer.memoryStorage({
@@ -78,13 +73,13 @@ router.post('/upload', upload.single('image'), (req, res) => {
 
 router.delete('/delete-image', async (req, res) => {
     try {
-        await unlinkAsync(path.join(__dirname, '../media/images') + '/' + req.query.filename)
+        await unlinkAsync(path.join(__dirname, '../media/images') + '/' + req.query.filename);
         // return s3.deleteObject({ bucket: "propertyaaaa", key: req.query.filename }, function (err, data) {
-        return res.send({ success: true })
+        return res.send({ success: true });
         // });
     } catch (error) {
         console.log(error);
-        return res.send({ sucess: false })
+        return res.send({ sucess: false });
     }
 });
 
@@ -93,11 +88,11 @@ router.get('/get-dropdowns', getAllDropDowns)
 router.post('/create', passport.authenticate('jwt'), ValidatePost, UserPostCreate)
 router.post('/update', passport.authenticate('jwt'), UserPostUpdate);
 
-router.post('/get-posts', isAuthenticated, getActivePosts)
+router.post('/get-posts', isAuthenticated, getActivePosts);
 
-router.post('/get-my-posts', passport.authenticate('jwt'), getMyPosts)
+router.post('/get-my-posts', passport.authenticate('jwt'), getMyPosts);
 
-router.get('/get-post-by-id/:id', getPostById)
+router.get('/get-post-by-id/:id', getPostById);
 
 router.post('/get-all-posts', getAllPosts);
 

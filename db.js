@@ -7,7 +7,7 @@ var {
 } = require('./models/post')
 const mongoose = require('mongoose'); 
 
-const uri = process.env.MONGODB_URI || 'mongodb+srv://user1:mongodb@cluster0.o1zql.mongodb.net/rose?retryWrites=true&w=majority';
+const uri = process.env.MONGODB_URI || 'mongodb://localhost/rose' || 'mongodb+srv://user1:mongodb@cluster0.o1zql.mongodb.net/rose?retryWrites=true&w=majority';
 const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,

@@ -63,8 +63,8 @@ export class UsersComponent implements OnInit, OnDestroy {
     if (this.userForm.valid) {
       this.userService.updateProfile(this.userForm.getRawValue()).subscribe(res => {
         localStorage.removeItem('userInfo');
-        localStorage.setItem('user', JSON.stringify({ ...this.userForm.getRawValue(), name: `${this.userForm.value.first_name} ${this.userForm.value.first_name}`, id: this.userInfo.id }));
-        this.authService.setUserInfo({ ...this.userForm.getRawValue(), name: `${this.userForm.value.first_name} ${this.userForm.value.first_name}` });
+        localStorage.setItem('user', JSON.stringify({ ...this.userForm.getRawValue(), name: `${this.userForm.value.first_name} ${this.userForm.value.last_name}`, id: this.userInfo.id }));
+        this.authService.setUserInfo({ ...this.userForm.getRawValue(), name: `${this.userForm.value.first_name} ${this.userForm.value.last_name}` });
         this.router.navigate(['']);
       })
     } else {

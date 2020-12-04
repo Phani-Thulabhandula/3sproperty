@@ -14,7 +14,7 @@
     <a *ngFor="let notification of notifications; trackBy: trackById"
        [class.read]="notification.is_read"
        (click)="getRoute(notification)"
-       class="notification"
+       class="notification cursor-pointer"
        fxLayout="row"
        fxLayoutAlign="start center"
        matRipple>

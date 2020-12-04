@@ -14,7 +14,7 @@
 
     <div fxFlex="auto">
       <div class="subheading-1">{{ getTitle(chat)  }}</div>
-      <div [class.text-green]="chat?.status === 'Online'" class="caption leading-none text-secondary">{{ chat?.status }}
+      <div [class.text-green]="chat?.status === 'online'" class="caption leading-none text-secondary">{{ chat?.status }}
       </div>
     </div>
 
@@ -46,7 +46,7 @@
     <form (ngSubmit)="send()" [formGroup]="form">
       <div class="border rounded-full text-hint overflow-hidden bg-card ltr:pl-6 rtl:pr-6" fxFlex="auto" fxLayout="row"
         fxLayoutAlign="start center">
-        <input class="outline-none border-0 h-12 w-240 placeholder:text-secondary body-1 bg-card"
+        <input class="outline-none border-0 h-12 w-240 body-1 bg-card"
           formControlName="message" fxFlex="auto" placeholder="Type a message..." type="text">
         <button [class.text-primary]="form.get('message').value" [disabled]="!form.get('message').value"
           class="ltr:mr-4 rtl:ml-4 ltr:ml-3 rtl:mr-3" mat-icon-button type="submit">

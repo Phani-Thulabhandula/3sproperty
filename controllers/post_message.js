@@ -3,18 +3,18 @@ var Notification = require('../models/notification');
 var { Post } = require('../models/post');
 
 
-async function getMyChats(req, res, next) {
-    try {
-        var chats = await PostChat.find({
-            to: req.user._id
-        }).populate('from').exec();
-        return res.send(chats)
-    } catch (error) {
-        console.log(error);
-        return res.send({})
+// async function getMyChats(req, res, next) {
+//     try {
+//         var chats = await PostChat.find({
+//             to: req.user._id
+//         }).populate('from').sort({createdAt: -1}).exec();
+//         return res.send(chats)
+//     } catch (error) {
+//         console.log(error);
+//         return res.send({})
 
-    }
-};
+//     }
+// };
 
 async function getMyChats(req, res, next) {
     try {
@@ -29,7 +29,7 @@ async function getMyChats(req, res, next) {
                         $match: {
                             $expr: { $eq: ['$chat_id', '$$id'] }
                         }
-                    }, { $limit: 1 }, { $sort: { updated_at: -1 } }]
+                    }, { $limit: 1 }, { $sort: { updatedAt: -1 } }]
                 }
             }, {
                 $unwind: "$message"
@@ -110,6 +110,7 @@ async function sendMyMessages(req, res, next) {
         if (!chat) {
             chat = await PostChat.create({ from: data.from, to: data.to, post_id: data.post_id });
         };
+
         var msg = await PostMessage.create({ from: data.from, to: data.to, message: data.message, chat_id: chat._id });
         res.send({
             success: true
@@ -122,6 +123,10 @@ async function sendMyMessages(req, res, next) {
             ref = String(chat._id)
         }
         Notification.create({ user_id: data.to, message: "You have a new Message", is_read: false, ref: ref, type: type });
+        chat.updatedAt = Date.now(); // TO UPDATE CHAT LAST MESSAGE
+        chat.save();
+        console.log(chat,"-");
+        
     } catch (error) {
         console.log(error);
         return res.send({
