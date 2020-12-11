@@ -49,7 +49,7 @@
                   {{ chat?.message?.message }}</div>
               </div>
               <div fxFlex="none" fxLayout="column" fxLayoutAlign="center end">
-                <div class="caption font-medium text-secondary">{{ chat.message.updatedAt | relativeDateTime }}</div>
+                <div class="caption font-medium text-secondary">{{ chat.updatedAt | relativeDateTime }}</div>
                 <!-- <div *ngIf="chat.unreadCount > 0"
                      class="w-5 h-5 bg-primary text-primary-contrast rounded-full caption text-center mt-1">
                   {{ chat?.unreadCount }}

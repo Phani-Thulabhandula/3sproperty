@@ -59,12 +59,23 @@ async function getPostById(req, res, next) {
         if (req.params.id) {
             let id = req.params.id;
             var post = await Post.findById(id).exec();
-            res.send({ ...post._doc })
+            let recent_posts = await Post.find({ type: post.type, property_type: post.property_type }).limit(4);
+            console.log(recent_posts);
+            let posts = [];
+            recent_posts.forEach(e => {
+                if (String(e._id) != String(post._id)) {
+                    posts.push(e)
+                }
+            });
+            // recent_posts = recent_posts.filter(s => { return String(s._id) != String(post._id)})
+            return res.send({ ...post._doc, recent_posts: posts })
         } else {
-            res.status(400).send({ "message": "Post Not Found" })
+            return res.status(400).send({ "message": "Post Not Found" })
         }
     } catch (error) {
-        res.status(400).send({ "message": "Post Not Found", error: error })
+        console.log(error);
+        
+        return res.status(400).send({ "message": "Post Not Found", error: error })
     }
 }
 

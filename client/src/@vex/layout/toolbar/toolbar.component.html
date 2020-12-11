@@ -91,9 +91,9 @@
   <ng-container *ngIf="isLoggedIn$ | async">
     <div class="-mx-1 flex items-center">
       <div class="px-1">
-        <button mat-icon-button type="button">
+        <a mat-icon-button type="button" [routerLink]="['/posts/search']">
           <mat-icon [icIcon]="icSearch"></mat-icon>
-        </button>
+        </a>
       </div>
 
       <div class="px-1">

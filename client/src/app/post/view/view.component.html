@@ -36,13 +36,13 @@
                         <span class="text-gray">Rent</span>
                     </div>
                 </div>
-                <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                <div fxFlex="13" class="font-semibold md:border-r-2 border-gary p-2">
                     {{postInfo.furnishing}}
                 </div>
-                <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                <div fxFlex="13" class="font-semibold md:border-r-2 border-gary p-2">
                     {{postInfo.type}}
                 </div>
-                <div fxFlex="10" class="font-semibold md:border-r-2 border-gary p-2">
+                <div fxFlex="13" class="font-semibold md:border-r-2 border-gary p-2">
                     {{postInfo.property_type}}
                 </div>
                 <div fxFlex="10">
@@ -73,7 +73,7 @@
             </span>
 
             <!-- <button mat-raised-button class="rounded-lg" color="accent">Request For site visit</button> -->
-            <mat-divider class="my-4 w-full"></mat-divider>
+            <!-- <mat-divider class="my-4 w-full"></mat-divider> -->
         </div>
         <ng-container *ngIf="this.postInfo.user_id != userInfo.id">
             <div fxFlex="30" class="w-full">
@@ -90,13 +90,13 @@
                              [icon]="icCheckCircle"
                              class="bg-card absolute -bottom-1 -right-1 rounded-full text-green"></ic-icon>
                   </div> -->
-                  <div class="relative">
-                    <!-- <img [src]="'/images/' + postInfo?.user_id?.avatar" class="avatar" fxFlex="none" *ngIf="postInfo?.user_id?.avatar"> -->
-                    <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
-                       class="avatar"/>
-                    <!-- <ic-icon *ngIf="postInfo?.user_id?.status === 'online'" [icon]="icCheckCircle"
+                        <div class="relative">
+                            <!-- <img [src]="'/images/' + postInfo?.user_id?.avatar" class="avatar" fxFlex="none" *ngIf="postInfo?.user_id?.avatar"> -->
+                            <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                                class="avatar" />
+                            <!-- <ic-icon *ngIf="postInfo?.user_id?.status === 'online'" [icon]="icCheckCircle"
                       class="bg-card absolute -bottom-1 -right-1 rounded-full text-green"></ic-icon> -->
-                  </div>
+                        </div>
                         <div fxFlex="auto">
                             <div class="subheading-1">Post Owner</div>
                             <!-- <div [class.text-green]="chat?.status === 'Online'"
@@ -111,17 +111,18 @@
                   </button> -->
                     </div>
 
-                    <vex-scrollbar [@stagger]="messages.length" class="p-4 flex-auto bg-gray-light">
+                    <vex-scrollbar class="p-4 flex-auto bg-gray-light">
                         <ng-container *ngFor="let message of messages">
                             <ng-container *ngIf="message.from === userInfo.id">
-                                <div @fadeInUp class="max-w-3/4 me" fxLayoutAlign="end" fxLayout="row">
-                                    <div class="m-1 mr-0 py-2 px-4 shadow-1 rounded-full bg-card message-bubble me">{{ message.message }}
+                                <div class="max-w-3/4 me" fxLayoutAlign="end" fxLayout="row">
+                                    <div class="m-1 mr-0 py-2 px-4 shadow-1 rounded-full bg-card message-bubble me">
+                                        {{ message.message }}
                                     </div>
                                 </div>
                             </ng-container>
 
                             <ng-container *ngIf="message.from != userInfo.id">
-                                <div @fadeInUp class="max-w-3/4 partner" fxLayoutAlign="start" fxLayout="row">
+                                <div class="max-w-3/4 partner" fxLayoutAlign="start" fxLayout="row">
                                     <div
                                         class="m-1 mr-0 py-2 px-4 shadow-1 rounded-full bg-primary text-primary-contrast message-bubble notme">
                                         {{ message.message }}</div>
@@ -170,5 +171,62 @@
             </div>
         </ng-container>
     </div>
+    <mat-divider class="w-full my-2"></mat-divider>
+    <div fxLayout="column" fxLayoutAlign="center start" class="mt-12 w-full">
+        <h2>Related Properties</h2>
+        <div fxLayout="row" fxLayoutAlign="center center" class="my-8 w-full" fxLayoutGap="20px"
+            *ngIf="!isRealtedPostLoading">
 
+            <a class="card_post card cursor-pointer" style="height: 320px;" [routerLink]="['/posts/view/'+ post._id]"
+                *ngFor="let post of related_posts" fxFlex="20">
+                <ng-container *ngIf="!post?.images.length">
+                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6"
+                        alt="" class="card1__image" style="height: 185px;width:300px">
+                </ng-container>
+                <ng-container *ngIf="post?.images.length">
+                    <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
+                        style="height: 185px;width:300px">
+                </ng-container>
+                <span class="p-4" fxLayout="row">$<h3>{{post.rent}}</h3></span>
+                <span class="px-2 text1 text-gray truncate">
+                    <span class="px-2">{{post.type}}</span> |  <span class="px-2">{{post.property_type}}</span>
+                </span>
+                <span class="px-2 text1 text-gray truncate w-10/12">
+                    {{post.location}}
+                </span>
+            </a>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="center center" class="mt-16 w-full" fxLayoutGap="20px"
+            *ngIf="isRealtedPostLoading">
+
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+            <div class="card_load" fxFlex="20">
+                <div class="card1__image loading"></div>
+                <div class="card1__title loading"></div>
+                <div class="card1__description loading"></div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div class="lower w-full border-t border-gray-light mt-2 card">
+    <div class="fullscreenWrapper mobileRightPadding p-8 text-gray container">
+        <div class="copyright">© 2020 3sProperty Technologies.</div>
+    </div>
 </div>

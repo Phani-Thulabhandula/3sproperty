@@ -25,11 +25,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-// import { NgImageSliderModule } from 'ng-image-slider';
 import { ViewComponent } from './view/view.component';
 import { ViewallComponent } from './viewall/viewall.component';
-// import {IvyCarouselModule} from 'angular-responsive-carousel';
-
 
 @NgModule({
   declarations: [PostComponent, CreateComponent, MypostsComponent, ViewComponent, ViewallComponent],
@@ -55,8 +52,6 @@ import { ViewallComponent } from './viewall/viewall.component';
     MatRadioModule,
     NgxDropzoneModule,
     MatCheckboxModule
-    // IvyCarouselModule
-    // NgImageSliderModule
   ]
 })
 export class PostModule { }

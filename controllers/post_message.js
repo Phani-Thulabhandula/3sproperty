@@ -44,6 +44,7 @@ async function getMyChats(req, res, next) {
                 $project: {
                     "_id": "$_id",
                     "to": "$to",
+                    "updatedAt": "$updatedAt",
                     // "messages": { "$arrayElemAt": ["$messages", 0] },
                     "message": "$message",
                     "from": { "$arrayElemAt": ["$from", 0] }

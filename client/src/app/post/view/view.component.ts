@@ -70,7 +70,10 @@ export class ViewComponent implements OnInit {
   }
   messages = [];
   form: FormGroup;
-  autoMessages:any = ["Schedule a visit"];
+  autoMessages: any = ["Schedule a visit", "Call me at: ", "Exact location please"];
+
+  related_posts: any = [];
+  isRealtedPostLoading: Boolean = false;
 
   @ViewChild(ScrollbarComponent, { static: true }) scrollbar: ScrollbarComponent;
 
@@ -81,10 +84,13 @@ export class ViewComponent implements OnInit {
     this.userInfo = this.authService.userInfo;
     this.route.params.subscribe(p => {
       if (p.id) {
-        this.getPropertyById(p.id)
+        this.getPropertyById(p.id);
+        setInterval(() => {
+          this.getPostMessages();
+        }, 11000)
       }
     });
-    this.filterMessages()
+    // this.filterMessages()
   }
 
 
@@ -98,39 +104,17 @@ export class ViewComponent implements OnInit {
   }
 
   getPropertyById(id) {
+    this.isRealtedPostLoading = true;
     this.apiService.getPropertyById(id).subscribe((res: any) => {
+      this.isRealtedPostLoading = false;
       this.postInfo = res;
+      this.related_posts = res['recent_posts'] || [];
       this.getPostMessages();
-      // setInterval(() => {
-      //   this.getPostMessages();
-      // }, 5000)
+
       this.images = res.images
     })
   }
 
-  filterMessages() {
-    this.messages = [
-      {
-        id: 9,
-        from: 'me',
-        message: 'Enim pariatur cupidatat minim nisi exercitation est ipsum nulla nisi amet.'
-      },
-      {
-        id: 7,
-        from: 'partner',
-        message: 'Elit ad cillum proident nostrud nostrud exercitation minim nulla consectetur enim irure minim sint.'
-      },
-      {
-        id: 3,
-        from: 'me',
-        message: 'Occaecat sint nulla ea veniam ad.'
-      },
-      {
-        id: 9,
-        from: 'me',
-        message: 'Duis esse nisi consequat ullamco est culpa dolor magna nisi culpa ullamco excepteur occaecat exercitation.'
-      }]
-  }
 
   scrollToBottom() {
     this.scrollbar.scrollbarRef.getScrollElement().scrollTo({
@@ -159,9 +143,12 @@ export class ViewComponent implements OnInit {
   }
 
   getPostMessages() {
-    this.apiService.getPostMessages(this.postInfo._id).subscribe((res: any) => {
-      this.messages = res.messages || [];
-    })
+    if (this.postInfo._id) {
+      this.apiService.getPostMessages(this.postInfo._id).subscribe((res: any) => {
+        this.messages = res.messages || [];
+      })
+    }
+
   }
   setMessage(m) {
     this.form.patchValue({ message: m });

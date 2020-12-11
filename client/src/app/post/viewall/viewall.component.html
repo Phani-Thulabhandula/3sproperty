@@ -64,7 +64,26 @@
             </div>
         </div>
         <div fxFlex="75">
-            <ng-container *ngIf="isTileView">
+            <div fxLayout="row" fxLayoutAlign="center center" class="mt-16 w-full" fxLayoutGap="20px" *ngIf="isLoading">
+
+                <div class="card_load" fxFlex="30">
+                    <div class="card1__image loading"></div>
+                    <div class="card1__title loading"></div>
+                    <div class="card1__description loading"></div>
+                </div>
+                <div class="card_load" fxFlex="30">
+                    <div class="card1__image loading"></div>
+                    <div class="card1__title loading"></div>
+                    <div class="card1__description loading"></div>
+                </div>
+                <div class="card_load" fxFlex="30">
+                    <div class="card1__image loading"></div>
+                    <div class="card1__title loading"></div>
+                    <div class="card1__description loading"></div>
+                </div>
+
+            </div>
+            <ng-container *ngIf="isTileView && !isLoading">
                 <div fxLayout="row wrap" fxLayoutGap="20px">
                     <a @fadeInUp class="example-card card mt-4" *ngFor="let post of posts" fxFlex="30"
                         [routerLink]="['/posts/view/' + post._id]">
@@ -96,10 +115,11 @@
                 </div>
 
             </ng-container>
-            <ng-container *ngIf="!isTileView">
+            <ng-container *ngIf="!isTileView && !isLoading">
 
-                <a @fadeInRight fxLayout="column" fxLayoutAlign="center start" [routerLink]="['/posts/view/' + post._id]"
-                    class="card hover:shadow-2 px-gutter py-4 mt-2 w-full" *ngFor="let post of posts">
+                <a @fadeInRight fxLayout="column" fxLayoutAlign="center start"
+                    [routerLink]="['/posts/view/' + post._id]" class="card hover:shadow-2 px-gutter py-4 mt-2 w-full"
+                    *ngFor="let post of posts">
                     <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="20px" class="w-full">
                         <div fxFlex="35">
                             <img style="max-height: 190px;"

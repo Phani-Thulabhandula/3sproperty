@@ -57,6 +57,7 @@ export class ViewallComponent implements OnInit {
     furnishing: [],
     posted_since: ''
   };
+  isLoading: Boolean = false;
 
   posts: any = []
 
@@ -81,9 +82,11 @@ export class ViewallComponent implements OnInit {
   }
 
   getActivePosts() {
-    let body = { search: this.search, sortBy: this.sortBy, type: this.types.filter(r => r.selected).map(e=> e.name), property_type: this.property_types.filter(r => r.selected).map(e=> e.name), furnishing: this.furnishings.filter(r => r.selected).map(e=> e.name) }
+    this.isLoading = true;
+    let body = { search: this.search, sortBy: this.sortBy, type: this.types.filter(r => r.selected).map(e => e.name), property_type: this.property_types.filter(r => r.selected).map(e => e.name), furnishing: this.furnishings.filter(r => r.selected).map(e => e.name) }
     this.apiService.getActivePosts(body).subscribe(res => {
-      this.posts = res['posts']
+      this.posts = res['posts'] || [];
+      this.isLoading = false;
     })
   }
 }

@@ -144,7 +144,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   getChats() {
-    this.chatService.getChats().subscribe(chats => {
+    this.chatService.getChats().subscribe((chats:any) => {
+      chats = chats.sort((a:any,b:any) =>{
+        // Turn your strings into dates, and then subtract them
+        // to get a value that is either negative, positive, or zero.
+        return (+new Date(b.updatedAt) - +new Date(a.updatedAt));
+      });
       this.chats = chats || [];
       this.cd.detectChanges();
 

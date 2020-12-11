@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     margin: 0px;
     padding: 0px;
     background: url("http://digital.bnint.com/filelib/s9/photos/white_wood_4500x3000_lo_res.jpg");
@@ -16,7 +17,7 @@ html, body {
     width: 100%;
 }
 
-.carousel-open:checked + .carousel-item {
+.carousel-open:checked+.carousel-item {
     position: static;
     opacity: 100;
 }
@@ -67,9 +68,9 @@ html, body {
     color: #aaaaaa;
 }
 
-#carousel-1:checked ~ .control-1,
-#carousel-2:checked ~ .control-2,
-#carousel-3:checked ~ .control-3 {
+#carousel-1:checked~.control-1,
+#carousel-2:checked~.control-2,
+#carousel-3:checked~.control-3 {
     display: block;
 }
 
@@ -101,9 +102,9 @@ html, body {
     color: #aaaaaa;
 }
 
-#carousel-1:checked ~ .control-1 ~ .carousel-indicators li:nth-child(1) .carousel-bullet,
-#carousel-2:checked ~ .control-2 ~ .carousel-indicators li:nth-child(2) .carousel-bullet,
-#carousel-3:checked ~ .control-3 ~ .carousel-indicators li:nth-child(3) .carousel-bullet {
+#carousel-1:checked~.control-1~.carousel-indicators li:nth-child(1) .carousel-bullet,
+#carousel-2:checked~.control-2~.carousel-indicators li:nth-child(2) .carousel-bullet,
+#carousel-3:checked~.control-3~.carousel-indicators li:nth-child(3) .carousel-bullet {
     color: #428bca;
 }
 
@@ -124,53 +125,55 @@ html, body {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
+    -webkit-line-clamp: 2;
+    /* number of lines to show */
     -webkit-box-orient: vertical;
- }
+}
 
- .me+.partner,
+.me+.partner,
 .partner+.me {
-  margin-top: var(--padding);
+    margin-top: var(--padding);
 }
 
 
 .message-bubble {
-  border-radius: 8px;
-  color: #303030;
-  position: relative;
-  font-size: 14px;
-
-  &:after {
-    display: block;
-    position: absolute;
-    content: "";
-    width: 16px;
-    height: 16px;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-  }
-
-  * {
+    border-radius: 8px;
+    color: #303030;
     position: relative;
-    z-index: 1;
-  }
+    font-size: 14px;
+
+    &:after {
+        display: block;
+        position: absolute;
+        content: "";
+        width: 16px;
+        height: 16px;
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    * {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .me.message-bubble {
-  background-color: #0199ff;
-  color: white;
-  &:after {
     background-color: #0199ff;
+    color: white;
 
-    right: -4px;
-  }
+    &:after {
+        background-color: #0199ff;
+
+        right: -4px;
+    }
 }
 
 .notme.message-bubble {
-  background-color: #d8dde1;
-
-  &:after {
     background-color: #d8dde1;
-    left: -4px;
-  }
+
+    &:after {
+        background-color: #d8dde1;
+        left: -4px;
+    }
 }
