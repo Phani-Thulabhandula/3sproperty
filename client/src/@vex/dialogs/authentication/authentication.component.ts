@@ -102,7 +102,7 @@ export class AuthenticationComponent implements OnInit {
         }
         this.isLoading = false;
         this.authService.setLoggedIn(true);
-        this.dialogRef.close();
+        this.dialogRef.close({});
       }, err => {
         console.log(err instanceof HttpErrorResponse, err.status, err.error.message);
 
@@ -135,7 +135,7 @@ export class AuthenticationComponent implements OnInit {
         }
         this.authService.setLoggedIn(true);
         this.isLoading = false;
-        this.onNoClick();
+        this.dialogRef.close({});
       }, err => {
         if (err instanceof HttpErrorResponse) {
           switch (err.status) {

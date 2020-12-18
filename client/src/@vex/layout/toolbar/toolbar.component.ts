@@ -78,8 +78,11 @@ export class ToolbarComponent implements OnInit {
     this.getNotifications();
     if (this.authService.isLoggedIn$) {
       setInterval(() => {
-        this.getNotifications();
-      }, 9000);
+        let token = localStorage.getItem("_A_tro_ee");
+        if (token) {
+          this.getNotifications();
+        }
+      }, 11000);
     }
 
     this.authService.userInfo$.subscribe(userInfo => {
@@ -106,6 +109,10 @@ export class ToolbarComponent implements OnInit {
       maxWidth: '100%',
       disableClose: true
     }).afterClosed().subscribe(res => {
+      if (res) {
+        window.location.reload();
+
+      }
       console.log(res);
     })
   }

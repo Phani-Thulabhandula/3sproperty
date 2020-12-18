@@ -26,7 +26,7 @@ const options = {
  * Get port from environment and store in Express.
  */
 
-const socket = require("socket.io");
+// const socket = require("socket.io");
 
 var port = normalizePort(process.env.PORT || '5000');
 app.set('port', port);
@@ -112,15 +112,15 @@ function onListening() {
 }
 
 
-const io = socket(server);
+// const io = socket(server);
 
-io.on("connection", function (socket) {
-  console.log("Made socket connection112");
+// io.on("connection", function (socket) {
+//   console.log("Made socket connection112");
 
-  socket.on("disconnect", () => {
-    // activeUsers.delete(socket.userId);
-    console.log("SOCKET DISCONNECTED");
+//   socket.on("disconnect", () => {
+//     // activeUsers.delete(socket.userId);
+//     console.log("SOCKET DISCONNECTED");
     
-    io.emit("user disconnected", socket.userId);
-  });
-});
+//     io.emit("user disconnected", socket.userId);
+//   });
+// });

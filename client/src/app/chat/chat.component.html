@@ -9,7 +9,7 @@
         <div class="p-4 border-b bg-app-bar" fxFlex="none" fxLayout="row" fxLayoutAlign="start center"
           fxLayoutGap="16px">
           <div [matMenuTriggerFor]="statusMenu" class="relative cursor-pointer">
-            <img class="avatar bg-card" fxFlex="none" [src]="'/images/' + userInfo?.avatar" *ngIf="userInfo?.avatar">
+            <img class="avatar bg-card" fxFlex="none" [src]="'https://methille.sirv.com/' + userInfo?.avatar" *ngIf="userInfo?.avatar">
             <img class="avatar bg-card" fxFlex="none" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" *ngIf="!userInfo?.avatar">
 
             <ic-icon [icon]="activeStatus.icon" [ngClass]="activeStatus.colorClass"
@@ -37,7 +37,7 @@
             matRipple routerLinkActive="bg-hover">
             <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="16px">
               <div class="relative" fxFlex="none">
-                <img [src]="('/images/' + chat?.from?.avatar)" class="avatar" *ngIf="chat?.from?.avatar">
+                <img [src]="('https://methille.sirv.com/' + chat?.from?.avatar)" class="avatar" *ngIf="chat?.from?.avatar">
                 <img src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" *ngIf="!chat?.from?.avatar" class="avatar">
                 <!-- <ic-icon *ngIf="chat?.status === 'online'" [icon]="icCheckCircle"
                   class="bg-card absolute -bottom-1 -right-1 rounded-full text-green"></ic-icon> -->

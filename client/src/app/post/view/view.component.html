@@ -1,5 +1,5 @@
 <div style="height: 400px;" fxLayout="row" fxLayoutAlign="center center" class="card w-100 container mt-4">
-    <img [src]="images[currentIndex] ? '/images/'+ images[currentIndex].path : 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101032/112815935-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'"
+    <img [src]="images[currentIndex] ? 'https://methille.sirv.com/'+ images[currentIndex].path : 'https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101032/112815935-stock-vector-no-image-available-icon-flat-vector-illustration.jpg?ver=6'"
         style="max-height: 100%;" class="mt-2" />
 </div>
 <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="30px" class="pt-4 card container">
@@ -184,7 +184,7 @@
                         alt="" class="card1__image" style="height: 185px;width:300px">
                 </ng-container>
                 <ng-container *ngIf="post?.images.length">
-                    <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
+                    <img [src]="('https://methille.sirv.com/' + post.images[0].path)" alt="" class="card1__image"
                         style="height: 185px;width:300px">
                 </ng-container>
                 <span class="p-4" fxLayout="row">$<h3>{{post.rent}}</h3></span>

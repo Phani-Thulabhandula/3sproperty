@@ -1,6 +1,7 @@
 
 var User = require('../models/user');
 var jwt = require('jsonwebtoken')
+const nodemailer = require("nodemailer");
 
 async function UserRegister(req, res, done) {
     let user = await User.findOne({ email: req.ValidatedData.email });
@@ -10,6 +11,27 @@ async function UserRegister(req, res, done) {
     let newUser = new User(req.ValidatedData);
     return newUser.save().then(us => {
         jwt.sign({ id: us._id }, 'secret', { algorithm: 'HS256' }, function (err, token) {
+            var transporter = nodemailer.createTransport({
+                host: process.env.email_host || 'smtp.googlemail.com', // Gmail Host
+                port: process.env.emailPort || 465, // Port
+                secure: true, // this is true as port is 465
+                auth: {
+                  user: process.env.email,
+                  pass: process.env.password
+                }
+              });
+              const mailOptions = {
+                from: '"3S Property" <no-reply@3sproperty.com> ', // sender address
+                to: req.body.email, // list of receivers
+                subject: 'Registerd - Canine Care!', // Subject line
+                html: `<p>Hi <strong>${us.first_name || us.email}</strong>, <br> <strong>Your Account has been registered </strong><br> Please check the latest properties</p>`// plain text body
+              };
+              transporter.sendMail(mailOptions, function (err, info) {
+                if (err)
+                  console.log(err)
+                else
+                  console.log(info);
+              });
             return res.status(201).send(
                 {
                     success: true,

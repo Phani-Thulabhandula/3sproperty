@@ -38,7 +38,7 @@
                         </div>
                     </div>
                     <div class="p-4 w-full" *ngIf="userForm.get('avatar').value" fxLayout="column" fxLayoutAlign="center center">
-                        <img [src]="'/images/' + userForm.get('avatar').value"  style="max-width: 100%;max-height: 100%;"/>
+                        <img [src]="'https://methille.sirv.com/' + userForm.get('avatar').value"  style="max-width: 100%;max-height: 100%;"/>
                         <button class="bg-red hover:bg-red text-white font-bold py-2 px-4 my-2 rounded focus:outline-none focus:shadow-outline" type="button" (click)="deleteImage()">
                             Remove
                           </button>

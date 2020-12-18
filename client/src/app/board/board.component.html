@@ -86,14 +86,14 @@
                         alt="" class="card1__image" style="height: 185px;width:300px">
                 </ng-container>
                 <ng-container *ngIf="post?.images.length">
-                    <img [src]="('/images/' + post.images[0].path)" alt="" class="card1__image"
+                    <img [src]="('https://methille.sirv.com/' + post.images[0].path)" alt="" class="card1__image"
                         style="height: 185px;width:300px">
                 </ng-container>
                 <span class="p-4" fxLayout="row">$<h3>{{post.rent}}</h3></span>
-                <span class="px-2 text1 text-gray truncate">
+                <span class="px-2 text1 text-gray overflow-ellipsis">
                     <span class="px-2">{{post.type}}</span> |  <span class="px-2">{{post.property_type}}</span>
                 </span>
-                <span class="px-2 text1 text-gray truncate w-10/12">
+                <span class="px-2 text1 text-gray overflow-ellipsis w-10/12">
                     {{post.location}}
                 </span>
             </a>
